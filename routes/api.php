@@ -20,6 +20,22 @@ Route::get('/health', fn () => [
     'time' => now()->toIso8601String(),
 ]);
 
+/*
+|--------------------------------------------------------------------------
+| Metadata — public reference data, no auth
+|--------------------------------------------------------------------------
+| Lets the frontend assert its CATEGORY_META matches this enum instead of
+| trusting a hand-maintained copy. Drift here makes the donut and the bar list
+| disagree with each other.
+*/
+Route::get('/v1/meta/categories', fn () => ['data' => collect(\App\Enums\FailureCategory::cases())
+    ->map(fn ($c) => [
+        'value' => $c->value,
+        'label' => $c->label(),
+        'color' => $c->color(),
+        'icon' => $c->icon(),
+    ])->values()]);
+
 Route::prefix('v1')->group(function (): void {
 
     /*

@@ -1,0 +1,45 @@
+# Local CI/CD lab. Start only when you need it — GitLab CE wants ~4 GB RAM.
+# Ports chosen to avoid this machine's existing services.
+name: pipemind-ci
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: pipemind-gitlab
+    restart: unless-stopped
+    hostname: gitlab.local
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.local:8929'
+        gitlab_rails['initial_root_password'] = 'PipeMind123!'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        prometheus_monitoring['enable'] = false
+        puma['worker_processes'] = 2
+    ports:
+      - "8929:8929"
+      - "2222:22"
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+    shm_size: '256m'
+    networks: [pipemind]
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: pipemind-runner
+    restart: unless-stopped
+    volumes:
+      - runner-config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks: [pipemind]
+
+volumes:
+  gitlab-config:
+  gitlab-logs:
+  gitlab-data:
+  runner-config:
+
+networks:
+  pipemind:
+    external: true

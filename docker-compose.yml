@@ -1,0 +1,95 @@
+name: pipemind
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: pipemind-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-pipemind}
+      POSTGRES_USER: ${DB_USERNAME:-pipemind}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "${DB_PORT:-5434}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-pipemind} -d ${DB_DATABASE:-pipemind}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [pipemind]
+
+  redis:
+    image: redis:7-alpine
+    container_name: pipemind-redis
+    restart: unless-stopped
+    # noeviction: Redis backs the job queue. Evicting keys under memory
+    # pressure would silently drop queued work.
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy noeviction
+    ports:
+      - "${REDIS_PORT:-6380}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks: [pipemind]
+
+  minio:
+    image: minio/minio:latest
+    container_name: pipemind-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER:-pipemind}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:-pipemind123}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks: [pipemind]
+
+  createbuckets:
+    image: minio/mc:latest
+    container_name: pipemind-createbuckets
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 ${MINIO_USER:-pipemind} ${MINIO_PASSWORD:-pipemind123};
+      mc mb --ignore-existing local/pipemind-logs;
+      mc mb --ignore-existing local/pipemind-artifacts;
+      exit 0;
+      "
+    networks: [pipemind]
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: pipemind-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks: [pipemind]
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:
+
+networks:
+  pipemind:
+    external: true

@@ -157,6 +157,7 @@ class DemoSeeder extends Seeder
             'color' => $color,
             'tech_stack' => $stack,
             'created_by' => $user->id,
+            'created_at' => now()->subDays(fake()->numberBetween(20, 90)),
         ]);
 
         $failures = $this->seedPipelines(
@@ -230,6 +231,10 @@ class DemoSeeder extends Seeder
                 'jobs_failed' => $shouldFail ? 1 : 0,
                 'jobs_succeeded' => $shouldFail ? count(self::STAGES) - 1 : count(self::STAGES),
                 'has_failure' => $shouldFail,
+                // Backdate: a pipeline row is created when the pipeline starts. Leaving
+                // this at now() makes every "today" query count the entire history.
+                'created_at' => $finishedAt->copy()->subSeconds($duration),
+                'updated_at' => $finishedAt,
             ]);
 
             $failedJob = $this->seedStagesAndJobs($pipeline, $shouldFail);

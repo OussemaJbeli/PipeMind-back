@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\JobStatus;
 use App\Models\Concerns\HasUuid;
+use App\Models\Concerns\ScopedThroughProject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PipelineJob extends Model
 {
-    use HasFactory, HasUuid;
+    use HasFactory, HasUuid, ScopedThroughProject;
 
     protected $guarded = ['id'];
 
@@ -29,6 +30,11 @@ class PipelineJob extends Model
             'started_at' => 'immutable_datetime',
             'finished_at' => 'immutable_datetime',
         ];
+    }
+
+    protected static function teamScopeRelation(): string
+    {
+        return 'pipeline.project';
     }
 
     public function pipeline(): BelongsTo

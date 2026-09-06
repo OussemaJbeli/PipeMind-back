@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\Vector;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,7 @@ class KnowledgeChunk extends Model
     protected function casts(): array
     {
         return [
+            'embedding' => Vector::class,
             'metadata' => 'array',
             'created_at' => 'immutable_datetime',
         ];

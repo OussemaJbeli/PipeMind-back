@@ -57,10 +57,26 @@ class Integration extends Model
 
     public function webhookUrl(): string
     {
-        return url("/webhooks/{$this->provider}/{$this->uuid}");
+        // Must match the route registered in routes/api.php, which carries the
+        // `api` prefix. A mismatch here silently registers a webhook that 404s
+        // on every delivery.
+        // loadMissing, not a bare property read: lazy loading is disabled outside
+        // production, so touching $this->team on a model that did not eager-load
+        // it throws LazyLoadingViolationException.
+        $this->loadMissing('team');
+
+        return $this->team->webhookBaseUrl()."/api/webhooks/{$this->provider}/{$this->uuid}";
     }
 
-    /** No events in 24h with active projects means a dead webhook. */
+    /** github.com / gitlab.com rather than a self-hosted instance. */
+    public function isCloudInstance(): bool
+    {
+        $host = parse_url((string) $this->base_url, PHP_URL_HOST) ?: '';
+
+        return $this->base_url === null
+            || in_array($host, ['github.com', 'api.github.com', 'gitlab.com'], true);
+    }
+
     public function looksStale(): bool
     {
         return $this->status === 'active'

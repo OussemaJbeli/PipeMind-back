@@ -50,7 +50,10 @@ return [
         'cache_ttl_hours' => 168,
 
         'max_similar_failures' => 5,
-        'similarity_threshold' => 0.75,
+        // 0.75 returned zero rows in practice — see
+        // PipeMind-data/experiments/similarity-threshold.md. The AI service owns the
+        // authoritative value; this mirrors it for display.
+        'similarity_threshold' => 0.55,
     ],
 
     /*

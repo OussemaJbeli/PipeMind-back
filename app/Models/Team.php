@@ -53,6 +53,44 @@ class Team extends Model
         return $this->hasMany(Project::class);
     }
 
+    /**
+     * Where providers should send webhooks.
+     *
+     * Stored per team rather than read from APP_URL because a free tunnel
+     * (cloudflared quick tunnel, ngrok free) gets a NEW hostname on every
+     * restart. Keeping it here lets the user paste the current URL into the UI
+     * and re-register every webhook, instead of editing .env and redeploying.
+     */
+    public function webhookBaseUrl(): string
+    {
+        $configured = $this->settings['webhook_base_url'] ?? null;
+
+        return rtrim($configured ?: config('app.url'), '/');
+    }
+
+    public function setWebhookBaseUrl(?string $url): void
+    {
+        $settings = $this->settings ?? [];
+
+        if ($url) {
+            $settings['webhook_base_url'] = rtrim($url, '/');
+        } else {
+            unset($settings['webhook_base_url']);
+        }
+
+        $this->update(['settings' => $settings]);
+    }
+
+    /** True when webhooks would be sent somewhere the provider cannot reach. */
+    public function webhookUrlIsReachable(): bool
+    {
+        $host = parse_url($this->webhookBaseUrl(), PHP_URL_HOST) ?: '';
+
+        return ! in_array($host, ['localhost', '127.0.0.1', '::1'], true)
+            && ! str_ends_with($host, '.local')
+            && ! str_ends_with($host, '.test');
+    }
+
     public function aiProviders(): HasMany
     {
         return $this->hasMany(AiProvider::class);

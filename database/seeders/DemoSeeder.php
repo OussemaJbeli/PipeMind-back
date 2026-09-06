@@ -43,10 +43,10 @@ class DemoSeeder extends Seeder
     private const PROJECTS = [
         // name, stack, success%, failures today, pipelines, colour, icon,
         // last-pipeline status, minutes since last pipeline
-        ['biker-api',    ['Laravel', 'Docker', 'GitLab'],      98.0, 2, 124, '#6366F1', 'code',       'success',  2],
-        ['biker-front',  ['Vue', 'TypeScript', 'GitLab'],      94.0, 1,  87, '#42B883', 'component',  'success', 10],
-        ['biker-mobile', ['React Native', 'Docker', 'GitLab'], 91.0, 3,  63, '#61DAFB', 'smartphone', 'failed',  45],
-        ['biker-admin',  ['Laravel', 'Docker', 'GitLab'],      97.0, 0,  56, '#8B5CF6', 'code',       'success', 60],
+        ['biker-api',    ['Laravel', 'Docker', 'GitHub'],      98.0, 2, 124, '#6366F1', 'code',       'success',  2],
+        ['biker-front',  ['Vue', 'TypeScript', 'GitHub'],      94.0, 1,  87, '#42B883', 'component',  'success', 10],
+        ['biker-mobile', ['React Native', 'Docker', 'GitHub'], 91.0, 3,  63, '#61DAFB', 'smartphone', 'failed',  45],
+        ['biker-admin',  ['Laravel', 'Docker', 'GitHub'],      97.0, 0,  56, '#8B5CF6', 'code',       'success', 60],
     ];
 
     /** Realistic distribution — deliberately NOT uniform. Uniform data hides bugs. */
@@ -73,9 +73,9 @@ class DemoSeeder extends Seeder
     public function run(): void
     {
         $user = User::create([
-            'name' => 'Oussema',
-            'email' => 'PmAG01@evoxai.ca',
-            'password' => Hash::make('password'),
+            'name' => 'Oussema Jbeli',
+            'email' => 'jbelioussema33@gmail.com',
+            'password' => Hash::make('123456789az'),
             'email_verified_at' => now(),
             'timezone' => 'Africa/Tunis',
             'theme' => 'dark',
@@ -85,8 +85,8 @@ class DemoSeeder extends Seeder
         ]);
 
         $team = Team::create([
-            'name' => 'Evox AI',
-            'slug' => 'evox-ai',
+            'name' => 'OJ Team',
+            'slug' => 'oj-team',
             'owner_id' => $user->id,
             'plan' => 'free',
             'privacy_mode' => 'cloud_redacted',
@@ -109,7 +109,7 @@ class DemoSeeder extends Seeder
             $this->seedWorkspaceActivity($team);
         });
 
-        $this->command->info('Demo workspace ready — PmAG01@evoxai.ca / password');
+        $this->command->info('Demo workspace ready — jbelioussema33@gmail.com / 123456789az');
     }
 
     private function seedPolicies(Team $team, User $user): void
@@ -130,9 +130,18 @@ class DemoSeeder extends Seeder
 
     private function seedIntegration(Team $team, User $user): Integration
     {
-        return Integration::factory()->gitlab()->create([
+        // Deliberately the generic provider, not GitHub: a fake GitHub token
+        // would show as a broken connection forever and trip the "no events in
+        // 24h" reconciliation warning. Generic is push-only, so an idle one is
+        // an honest state rather than an error.
+        return Integration::factory()->create([
             'team_id' => $team->id,
             'created_by' => $user->id,
+            'provider' => 'generic',
+            'name' => 'Sample data',
+            'base_url' => null,
+            'status' => 'active',
+            'last_event_at' => now()->subMinutes(3),
         ]);
     }
 
@@ -149,9 +158,9 @@ class DemoSeeder extends Seeder
             'name' => $name,
             'slug' => $name,
             'external_id' => (string) fake()->unique()->numberBetween(1000, 9999),
-            'external_path' => "evoxai/{$name}",
-            'repository_url' => "https://gitlab.com/evoxai/{$name}.git",
-            'web_url' => "https://gitlab.com/evoxai/{$name}",
+            'external_path' => "OussemaJbeli/{$name}",
+            'repository_url' => "https://github.com/OussemaJbeli/{$name}.git",
+            'web_url' => "https://github.com/OussemaJbeli/{$name}",
             'default_branch' => 'main',
             'icon' => $icon,
             'color' => $color,
@@ -213,7 +222,7 @@ class DemoSeeder extends Seeder
                 'project_id' => $project->id,
                 'external_id' => (string) fake()->unique()->numberBetween(100000, 999999),
                 'iid' => $iid--,
-                'provider' => 'gitlab',
+                'provider' => 'github',
                 'status' => $shouldFail ? 'failed' : 'success',
                 'source' => fake()->randomElement(['push', 'push', 'merge_request', 'schedule']),
                 'ref' => $ref,
@@ -222,7 +231,7 @@ class DemoSeeder extends Seeder
                 'commit_message' => fake()->sentence(5),
                 'commit_author_name' => fake()->randomElement(['Oussema', 'Sarah', 'Karim']),
                 'commit_author_email' => fake()->safeEmail(),
-                'web_url' => "https://gitlab.com/evoxai/{$project->name}/-/pipelines/{$iid}",
+                'web_url' => "https://github.com/OussemaJbeli/{$project->name}/actions/runs/{$iid}",
                 'started_at' => $finishedAt->copy()->subSeconds($duration),
                 'finished_at' => $finishedAt,
                 'duration_seconds' => $duration,

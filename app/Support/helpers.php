@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Models\ActivityLog;
+use App\Models\Project;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Model;
 
 if (! function_exists('currentTeam')) {
     /**
@@ -60,5 +63,45 @@ if (! function_exists('withTeam')) {
                 app()->forgetInstance('pipemind.team');
             }
         }
+    }
+}
+
+if (! function_exists('activity_log')) {
+    /**
+     * Append to the feed shown on both target pages.
+     *
+     * The `action` vocabulary is fixed and the frontend maps each to an icon and
+     * colour, degrading unknown values to a neutral dot — so adding an action
+     * here never requires a frontend release.
+     */
+    function activity_log(
+        ?Project $project,
+        string $action,
+        string $level = 'info',
+        string $title = '',
+        ?string $description = null,
+        ?Model $subject = null,
+        array $metadata = [],
+    ): void {
+        $teamId = $project?->team_id ?? currentTeamId();
+
+        if (! $teamId) {
+            return;
+        }
+
+        ActivityLog::create([
+            'team_id' => $teamId,
+            'project_id' => $project?->id,
+            'user_id' => auth()->id(),
+            'actor_type' => auth()->check() ? 'user' : (str_starts_with($action, 'analysis') ? 'ai' : 'system'),
+            'action' => $action,
+            'level' => $level,
+            'title' => $title ?: ($project?->name ?? 'PipeMind'),
+            'description' => $description,
+            'subject_type' => $subject ? class_basename($subject) : null,
+            'subject_id' => $subject?->getKey(),
+            'subject_uuid' => $subject->uuid ?? null,
+            'metadata' => $metadata,
+        ]);
     }
 }

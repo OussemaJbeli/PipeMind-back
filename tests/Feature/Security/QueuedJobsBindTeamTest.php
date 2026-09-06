@@ -8,20 +8,22 @@ it('binds a team in every queued job', function () {
     $jobsPath = app_path('Jobs');
 
     if (! File::isDirectory($jobsPath)) {
-        expect(true)->toBeTrue();   // no jobs yet — file 05 adds them
+        expect(true)->toBeTrue();
 
         return;
     }
 
-    foreach (File::allFiles($jobsPath) as $file) {
-        $source = File::get($file->getPathname());
+    $offenders = [];
 
+    foreach (File::allFiles($jobsPath) as $file) {
         // A worker has no authenticated user, so TeamScope is inert without an
         // explicit binding. Without withTeam() the job silently operates across
         // every tenant — the most likely source of a cross-tenant leak.
-        expect($source)->toContain(
-            'withTeam(',
-            "{$file->getFilename()} does not bind a team"
-        );
+        if (! str_contains(File::get($file->getPathname()), 'withTeam(')) {
+            $offenders[] = $file->getFilename();
+        }
     }
+
+    // Naming the offenders in the failure beats a bare boolean.
+    expect($offenders)->toBe([], 'These jobs do not bind a team: '.implode(', ', $offenders));
 });

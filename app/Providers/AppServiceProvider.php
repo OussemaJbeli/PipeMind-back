@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Failure;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -51,5 +52,18 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('assistant', fn (Request $r) => Limit::perHour(30)
             ->by($r->user()?->id ?: $r->ip()));
+
+        // The queue-side limiter for AnalyzeFailure. Separate from 'analysis'
+        // above, which throttles the HTTP trigger: a burst of auto-analyses from
+        // webhook ingestion never passes through a request at all.
+        //
+        // Per-team, so one noisy workspace cannot starve another.
+        RateLimiter::for('ai-analysis', function (object $job) {
+            $teamId = Failure::withoutGlobalScopes()
+                ->where('id', $job->failureId ?? 0)
+                ->value('team_id');
+
+            return Limit::perMinute(10)->by('ai-analysis:'.($teamId ?? 'unknown'));
+        });
     }
 }

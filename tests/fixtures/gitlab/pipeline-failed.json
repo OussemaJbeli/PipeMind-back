@@ -1,0 +1,54 @@
+{
+  "object_kind": "pipeline",
+  "object_attributes": {
+    "id": 991001,
+    "iid": 821,
+    "ref": "feature/payment",
+    "tag": false,
+    "sha": "a82c91f3b4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    "source": "push",
+    "status": "failed",
+    "created_at": "2026-08-30 14:30:00 UTC",
+    "started_at": "2026-08-30 14:30:04 UTC",
+    "finished_at": "2026-08-30 14:32:18 UTC",
+    "duration": 134,
+    "queued_duration": 4,
+    "url": "http://gitlab.local/OussemaJbeli/biker-api/-/pipelines/991001"
+  },
+  "user": { "name": "Oussema", "username": "oussema" },
+  "project": {
+    "id": 42,
+    "name": "biker-api",
+    "path_with_namespace": "OussemaJbeli/biker-api",
+    "default_branch": "main"
+  },
+  "commit": {
+    "id": "a82c91f3b4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9",
+    "message": "wire payment webhook\n",
+    "url": "http://gitlab.local/OussemaJbeli/biker-api/-/commit/a82c91f",
+    "author": { "name": "Oussema", "email": "dev@example.com" }
+  },
+  "builds": [
+    {
+      "id": 5001, "stage": "checkout", "name": "checkout", "status": "success",
+      "started_at": "2026-08-30 14:30:04 UTC", "finished_at": "2026-08-30 14:30:08 UTC",
+      "duration": 4.1, "allow_failure": false, "failure_reason": null
+    },
+    {
+      "id": 5002, "stage": "install", "name": "npm-ci", "status": "success",
+      "started_at": "2026-08-30 14:30:08 UTC", "finished_at": "2026-08-30 14:30:46 UTC",
+      "duration": 38.2, "allow_failure": false, "failure_reason": null
+    },
+    {
+      "id": 5003, "stage": "test", "name": "backend-tests", "status": "failed",
+      "started_at": "2026-08-30 14:30:46 UTC", "finished_at": "2026-08-30 14:32:18 UTC",
+      "duration": 92.4, "allow_failure": false, "failure_reason": "script_failure",
+      "runner": { "description": "docker-runner-1", "tags": ["docker"] }
+    },
+    {
+      "id": 5004, "stage": "build", "name": "docker-build", "status": "skipped",
+      "started_at": null, "finished_at": null, "duration": null,
+      "allow_failure": false, "failure_reason": null
+    }
+  ]
+}

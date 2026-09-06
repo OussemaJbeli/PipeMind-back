@@ -533,3 +533,9 @@ PipeMind should eventually be able to answer:
 The backend exists to make that intelligence reliable, traceable, secure, and usable in a real development workflow.
 
 The architecture should therefore remain open to better ideas as PipeMind evolves. The documented structure is a foundation, not a restriction.
+
+
+## run project
+- php artisan serve
+- php artisan queue:work --queue=ingestion,logs,analysis,metrics,default
+- php artisan pipemind:tunnel

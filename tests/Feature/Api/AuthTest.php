@@ -42,10 +42,10 @@ it('registers a user with a team and the default policies', function () {
         'email' => 'new@example.com',
         'password' => 'correct-horse-battery',
         'password_confirmation' => 'correct-horse-battery',
-        'team_name' => 'Evox AI',
-    ])->assertCreated()->assertJsonPath('data.current_team.name', 'Evox AI');
+        'team_name' => 'OJ Team',
+    ])->assertCreated()->assertJsonPath('data.current_team.name', 'OJ Team');
 
-    $team = Team::where('name', 'Evox AI')->firstOrFail();
+    $team = Team::where('name', 'OJ Team')->firstOrFail();
 
     // A missing policy means FORBIDDEN, so a workspace without these could
     // never remediate anything.

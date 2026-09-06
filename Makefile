@@ -40,6 +40,9 @@ redis:       ## Open redis-cli inside the container
 minio:       ## Open the MinIO console
 	@echo "http://localhost:9001  (pipemind / pipemind123)"
 
+tunnel:      ## Expose the API via cloudflared and re-register webhooks
+	php artisan pipemind:tunnel
+
 gitlab-up:   ## Start the local GitLab lab (heavy)
 	docker compose -f docker-compose.gitlab.yml up -d
 gitlab-down: ## Stop the local GitLab lab

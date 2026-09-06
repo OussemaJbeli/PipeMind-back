@@ -13,6 +13,12 @@ class PipelineEvent extends Model
 {
     use HasFactory, HasUuid;
 
+    /**
+     * The table is append-only with explicit received_at / processed_at columns
+     * and no created_at / updated_at pair.
+     */
+    public $timestamps = false;
+
     protected $guarded = ['id'];
 
     protected function casts(): array

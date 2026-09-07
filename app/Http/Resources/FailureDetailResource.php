@@ -77,6 +77,8 @@ class FailureDetailResource extends JsonResource
                         'deletions' => $change->deletions,
                         'is_config' => (bool) $change->is_config,
                         'is_dependency' => (bool) $change->is_dependency,
+                        'patch' => $change->patch,
+                        'patch_truncated' => (bool) $change->patch_truncated,
                     ])->values()->all()
                     : [],
                 'previous_pipeline' => $this->previous_pipeline,
@@ -104,6 +106,10 @@ class FailureDetailResource extends JsonResource
                     'confidence' => $rec->confidence !== null ? (float) $rec->confidence : null,
                     'affected_files' => $rec->affected_files ?? [],
                     'has_patch' => filled($rec->patch),
+                    // Sent inline: it is already bounded to 8 KB by the
+                    // validator, and a second round trip to read a diff the user
+                    // is looking at buys nothing.
+                    'patch' => $rec->patch,
                     'status' => $rec->status,
                 ])->values()->all(),
                 [],

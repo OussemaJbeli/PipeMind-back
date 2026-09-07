@@ -116,6 +116,11 @@ class AnalysisPersister
             'cost_usd' => 0,
             'prompt_tokens' => 0,
             'completion_tokens' => 0,
+            // Latency is zeroed alongside cost. Carrying the original call's
+            // figure forward would report a cache hit as taking as long as the
+            // model call it replaced — which makes every "the cache saved us"
+            // number in the reports say the opposite of the truth.
+            'latency_ms' => 0,
             'cache_hit' => true,
         ]);
 

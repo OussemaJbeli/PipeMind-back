@@ -121,11 +121,16 @@ class DemoSeeder extends Seeder
 
     private function seedAiProvider(Team $team): AiProvider
     {
-        // Stub is the default until an API key is configured — files 06-16 are
-        // fully buildable without one.
-        AiProvider::factory()->stub()->create(['team_id' => $team->id, 'is_default' => false]);
+        // The stub is the default until a real key is configured. Seeding a
+        // keyless Gemini as the default instead would make every analysis in a
+        // fresh workspace fail with "No Gemini API key configured" — which reads
+        // like a broken application rather than an unfinished setup.
+        //
+        // Gemini is seeded alongside it as `untested`, so the workspace shows
+        // what to configure without pretending it already works.
+        AiProvider::factory()->create(['team_id' => $team->id, 'is_default' => false]);
 
-        return AiProvider::factory()->create(['team_id' => $team->id, 'is_default' => true]);
+        return AiProvider::factory()->stub()->create(['team_id' => $team->id, 'is_default' => true]);
     }
 
     private function seedIntegration(Team $team, User $user): Integration

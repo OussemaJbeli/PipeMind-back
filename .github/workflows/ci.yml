@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+# A new push makes an in-flight run irrelevant. Without this, a branch pushed
+# three times queues three full runs and the useful one waits behind the stale ones.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint & static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_pgsql, redis
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Formatting
+        run: vendor/bin/pint --test
+
+      # Baselined, so this enforces "no new errors". It caught a dead public
+      # health endpoint calling a method that does not exist on its first run.
+      - name: Static analysis
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
+
+      # Gated, unlike the Python one: composer's advisories are currently clean,
+      # so this can fail the build the day that changes.
+      - name: Dependency audit
+        run: composer audit
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        # pgvector, not plain postgres: the schema declares vector(384) columns
+        # and migrations fail outright without the extension.
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB: pipemind_test
+          POSTGRES_USER: pipemind
+          POSTGRES_PASSWORD: secret
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: pipemind_test
+      DB_USERNAME: pipemind
+      DB_PASSWORD: secret
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: sync
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_pgsql, redis
+          # pcov, not xdebug: an order of magnitude faster for line coverage,
+          # and coverage is all this needs.
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Cache composer
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - run: php artisan migrate --force
+
+      # The documented schema and the migrations must agree, or PipeMind-data
+      # quietly becomes fiction and stops being a reference anyone can trust.
+      - name: Schema drift
+        run: php artisan pipemind:schema-check
+
+      # Coverage is reported but NOT gated yet. No coverage driver is installed
+      # on the development machine, so any threshold here would be a guess — and
+      # a gate that fails on its first run is a gate somebody disables by the end
+      # of the week. Roadmap 21 sets it from the number this run actually prints.
+      - name: Tests
+        run: vendor/bin/pest --coverage
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # gitleaks scans history, which needs the full clone rather than the
+          # single commit actions/checkout fetches by default.
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

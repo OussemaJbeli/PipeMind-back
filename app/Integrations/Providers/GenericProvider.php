@@ -131,7 +131,7 @@ class GenericProvider implements PipelineProvider
                 externalId: (string) ($job['external_id'] ?? $i),
                 name: (string) ($job['name'] ?? "job-{$i}"),
                 stageName: (string) ($job['stage'] ?? 'unknown'),
-                status: StatusMapper::generic($job['status'] ?? null),
+                status: StatusMapper::forJob(StatusMapper::generic($job['status'] ?? null)),
                 position: $i,
                 exitCode: isset($job['exit_code']) ? (int) $job['exit_code'] : null,
                 startedAt: $job['started_at'] ?? null,
@@ -169,6 +169,16 @@ class GenericProvider implements PipelineProvider
     public function fetchCommitChanges(Integration $integration, Project $project, string $sha): array
     {
         return [];
+    }
+
+    /** A generic webhook source exposes no repository to read from. */
+    public function fetchFileContents(
+        Integration $integration,
+        Project $project,
+        string $path,
+        ?string $ref = null,
+    ): ?string {
+        return null;
     }
 
     public function retryJob(Integration $integration, Project $project, PipelineJob $job): array

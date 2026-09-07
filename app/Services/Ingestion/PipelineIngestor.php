@@ -42,6 +42,17 @@ class PipelineIngestor
             return null;
         }
 
+        // A job-scoped event describes ONE job and carries no pipeline at all.
+        //
+        // GitHub's workflow_job payload has no `id` and no `workflow_run` key, so
+        // normalizePipeline() would read `$payload['id']` and crash — which is
+        // exactly what happened: 18 job deliveries arrived and every one of them
+        // failed here, while the workflow_run events that created the pipelines
+        // succeeded and made the ingestion look partly healthy.
+        if ($event->event_type === 'job') {
+            return $this->ingestJobOnly($project, $adapter, $payload, $event);
+        }
+
         $normalized = $adapter->normalizePipeline($payload);
 
         $pipeline = DB::transaction(function () use ($project, $normalized, $adapter, $payload, $event) {
@@ -64,6 +75,69 @@ class PipelineIngestor
         });
 
         $this->dispatchFollowUp($integration, $project, $pipeline, $normalized);
+
+        return $pipeline;
+    }
+
+    /**
+     * Attaches a job to a pipeline that already exists.
+     *
+     * GitHub sends workflow_job and workflow_run independently and in no
+     * guaranteed order, so the run may not have been created yet. That is not an
+     * error: the workflow_run delivery creates the pipeline, and GitHub's own
+     * redelivery plus our reconciliation both bring the job in afterwards.
+     */
+    protected function ingestJobOnly(
+        Project $project,
+        PipelineProvider $adapter,
+        array $payload,
+        PipelineEvent $event,
+    ): ?Pipeline {
+        $externalId = $adapter->externalPipelineId($payload);
+
+        $pipeline = $externalId
+            ? Pipeline::withoutGlobalScopes()
+                ->where('project_id', $project->id)
+                ->where('external_id', $externalId)
+                ->first()
+            : null;
+
+        if (! $pipeline) {
+            $event->update([
+                'processing_status' => 'skipped',
+                'processing_error' => 'Job event arrived before its workflow run; the run event will create it.',
+                'processed_at' => now(),
+            ]);
+
+            return null;
+        }
+
+        $jobs = $adapter->normalizeJobs($payload);
+
+        DB::transaction(function () use ($pipeline, $jobs, $event, $project): void {
+            if ($jobs !== []) {
+                $this->upsertJobs($pipeline, $jobs);
+            }
+
+            $this->recomputeCounters($pipeline);
+
+            $event->update(['project_id' => $project->id, 'pipeline_id' => $pipeline->id]);
+        });
+
+        // A job finishing is how a failed job's log becomes fetchable — the
+        // workflow_run event alone never carries per-job detail.
+        foreach ($jobs as $job) {
+            if ($job->status === 'failed') {
+                $record = PipelineJob::withoutGlobalScopes()
+                    ->where('pipeline_id', $pipeline->id)
+                    ->where('external_id', $job->externalId)
+                    ->first();
+
+                if ($record && ! $record->log_fetched) {
+                    FetchJobLog::dispatch($record->id);
+                }
+            }
+        }
 
         return $pipeline;
     }

@@ -81,6 +81,16 @@ class Failure extends Model
         return $this->hasOne(FailureEmbedding::class);
     }
 
+    /**
+     * latestOfMany() builds a self-join on `analyses`, so any column selection
+     * against this relation MUST be table-qualified:
+     *
+     *   ->with('latestAnalysis:analyses.id,analyses.failure_id,analyses.confidence')
+     *
+     * Bare column names raise "column reference is ambiguous" at query time, and
+     * only on the eager-load path — so it passes every test that does not eager
+     * load and fails as a 500 in the browser.
+     */
     public function latestAnalysis(): HasOne
     {
         return $this->hasOne(Analysis::class)->latestOfMany();

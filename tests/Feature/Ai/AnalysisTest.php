@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Exceptions\Ai\AiInvalidResponse;
+use App\Exceptions\Ai\AiProviderRateLimited;
 use App\Exceptions\Ai\NoLocalProviderConfigured;
 use App\Jobs\AnalyzeFailure;
 use App\Jobs\EmbedFailure;
@@ -193,6 +194,10 @@ describe('the analysis cache', function () {
 
         expect($analysis->cache_hit)->toBeTrue()
             ->and((float) $analysis->cost_usd)->toBe(0.0)
+            // Carrying the original latency forward would make every
+            // "the cache saved us" figure report the opposite of the truth.
+            ->and($analysis->latency_ms)->toBe(0)
+            ->and($analysis->prompt_tokens)->toBe(0)
             // A reused analysis still gets its own evidence and recommendations,
             // or the failure page renders empty for the best-handled failures.
             ->and($analysis->evidence()->count())->toBe(1)
@@ -313,4 +318,76 @@ describe('the embedding job', function () {
 
         expect(FailureEmbedding::where('failure_id', $failure->id)->count())->toBe(1);
     });
+});
+
+it('does not retry a rejected API key', function () {
+    Http::fake([
+        '*/v1/analyze' => Http::response([
+            'error_code' => 'AI_PROVIDER_UNAUTHORIZED',
+            'message' => 'Gemini rejected this credential type. It looks like an OAuth access token.',
+        ], 401),
+        '*' => AiFakes::router(),
+    ]);
+
+    $failure = analysable();
+
+    AnalyzeFailure::dispatchSync($failure->id);
+
+    // One attempt, not three: no retry can fix a typo, and repeating it buries
+    // the one message that tells the user what to change.
+    Http::assertSentCount(1);
+
+    expect($failure->fresh()->status->value)->toBe('analysis_failed')
+        ->and($failure->fresh()->latestAnalysis->error)->toContain('OAuth access token');
+});
+
+it('sends the previous pipeline status as a string, not a PHP enum', function () {
+    // `value()` applies model casts, so this comes back as a PipelineStatus enum.
+    // The payload is JSON-encoded for a Python service that has no idea what a
+    // PHP enum is — and the declared ?string return type made it a hard TypeError
+    // on every failure whose branch had a prior pipeline.
+    $failure = analysable();
+
+    Pipeline::factory()->for($failure->project)->create([
+        'ref' => $failure->pipeline->ref,
+        'status' => 'success',
+        'id' => $failure->pipeline_id - 1,
+    ]);
+
+    $context = app(AnalysisContextBuilder::class)->build($failure);
+
+    expect($context['pipeline']['previous_status'])->toBe('success')
+        ->and(json_encode($context))->toBeString();
+});
+
+it('reports a spent quota as a rate limit, not an outage', function () {
+    // Google's free tier caps generateContent at 20 requests per day per model.
+    // Telling the user "the analysis service is unreachable" sends them to check
+    // containers and logs for a problem that does not exist.
+    Http::fake([
+        '*/v1/analyze' => Http::response([
+            'error_code' => 'AI_PROVIDER_RATE_LIMITED',
+            'message' => 'Quota exceeded for generate_content_free_tier_requests, limit: 20.',
+        ], 429),
+        '*' => AiFakes::router(),
+    ]);
+
+    $failure = analysable();
+
+    // handle() directly, not dispatchSync: sync dispatch has no retries left, so
+    // it runs failed() and finalises the row. The state under test is the one
+    // BETWEEN queue attempts, which only exists mid-retry.
+    $job = new AnalyzeFailure($failure->id);
+
+    expect(fn () => app()->call([$job, 'handle']))
+        ->toThrow(AiProviderRateLimited::class);
+
+    // Left as `analyzing`: the queue is coming back, and flipping to failed
+    // would flicker in the UI for what is only a wait.
+    expect($failure->fresh()->status->value)->toBe('analyzing')
+        ->and(AiRequest::withoutGlobalScopes()->first()->status)->toBe('rate_limited');
+
+    // The last attempt does finalise it, so nothing is left spinning forever.
+    $job->failed(new AiProviderRateLimited);
+    expect($failure->fresh()->status->value)->toBe('analysis_failed');
 });

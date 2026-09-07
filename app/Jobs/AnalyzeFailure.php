@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Exceptions\Ai\AiBudgetExceeded;
+use App\Exceptions\Ai\AiProviderRateLimited;
+use App\Exceptions\Ai\AiProviderUnauthorized;
 use App\Exceptions\Ai\AiServiceUnavailable;
 use App\Exceptions\Ai\NoLocalProviderConfigured;
 use App\Models\Analysis;
@@ -109,6 +111,12 @@ class AnalyzeFailure implements ShouldQueue
                 $recorder->recordFailure($analysis, $failure, 'budget_exceeded', $e->getMessage());
                 $this->markFailed($analysis, $failure, $e->getMessage(), retry: false);
                 $this->fail($e);
+            } catch (AiProviderUnauthorized $e) {
+                // No retry can fix a bad key, and the user needs to see why
+                // rather than watch three attempts fail identically.
+                $recorder->recordFailure($analysis, $failure, 'error', $e->getMessage());
+                $this->markFailed($analysis, $failure, $e->getMessage(), retry: false);
+                $this->fail($e);
             } catch (NoLocalProviderConfigured $e) {
                 // A configuration problem no retry can fix, and one the user must
                 // see rather than have silently resolved against their privacy
@@ -116,6 +124,14 @@ class AnalyzeFailure implements ShouldQueue
                 $recorder->recordFailure($analysis, $failure, 'error', $e->getMessage());
                 $this->markFailed($analysis, $failure, $e->getMessage(), retry: false);
                 $this->fail($e);
+            } catch (AiProviderRateLimited $e) {
+                // Retryable, but leave the failure as `analyzing`: the queue
+                // will come back, and flipping it to failed would flicker in the
+                // UI for something that is only a wait.
+                $recorder->recordFailure($analysis, $failure, 'rate_limited', $e->getMessage());
+                $this->markFailed($analysis, $failure, $e->getMessage(), retry: true);
+
+                throw $e;
             } catch (AiServiceUnavailable $e) {
                 $recorder->recordFailure($analysis, $failure, 'error', $e->getMessage());
                 $this->markFailed($analysis, $failure, $e->getMessage(), retry: true);

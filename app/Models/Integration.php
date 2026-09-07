@@ -6,12 +6,20 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToTeam;
 use App\Models\Concerns\HasUuid;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Larastan reads the `casts()` method for most types but not for
+ * `immutable_datetime`, so without this it infers `string` and every
+ * date method called on the field is a false positive.
+ *
+ * @property CarbonImmutable|null $last_event_at
+ */
 class Integration extends Model
 {
     use BelongsToTeam, HasFactory, HasUuid, SoftDeletes;

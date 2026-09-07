@@ -21,6 +21,9 @@ class ProjectCardResource extends JsonResource
             'icon' => $this->icon,
             'color' => $this->color,
             'tech_stack' => $this->tech_stack ?? [],
+            // Needed by the projects filter. whenLoaded so a caller that did not
+            // eager-load the integration triggers no N+1.
+            'provider' => $this->whenLoaded('integration', fn () => $this->integration?->provider),
 
             // "Right now", deliberately distinct from the 30-day success_rate:
             // a project at 98% whose last pipeline just failed must not read green.

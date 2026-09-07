@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToTeam;
 use App\Models\Concerns\HasUuid;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
+/**
+ * Larastan reads the `casts()` method for most types but not for
+ * `immutable_datetime`, so without this it infers `string` and every
+ * date method called on the field is a false positive.
+ *
+ * @property CarbonImmutable|null $last_pipeline_at
+ */
 class Project extends Model
 {
     use BelongsToTeam, HasFactory, HasUuid, SoftDeletes;
@@ -33,11 +41,13 @@ class Project extends Model
         ];
     }
 
+    /** @return BelongsTo<Integration, $this> */
     public function integration(): BelongsTo
     {
         return $this->belongsTo(Integration::class);
     }
 
+    /** @return BelongsTo<AiProvider, $this> */
     public function aiProvider(): BelongsTo
     {
         return $this->belongsTo(AiProvider::class);

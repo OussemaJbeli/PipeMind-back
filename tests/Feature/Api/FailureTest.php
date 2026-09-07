@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Jobs\AnalyzeFailure;
 use App\Models\Analysis;
 use App\Models\AnalysisEvidence;
+use App\Models\AnalysisFeedback;
 use App\Models\CommitChange;
 use App\Models\Failure;
 use App\Models\Pipeline;
@@ -185,4 +186,110 @@ it('rejects a resolution type the database would refuse', function () {
     $this->actingAs($user)->putJson("/api/v1/failures/{$failure->uuid}/resolve", [
         'resolution_type' => 'unresolved',
     ])->assertStatus(422);
+});
+
+it('builds a timeline from the rows rather than a second log', function () {
+    $user = User::factory()->withTeam()->create();
+    $failure = failureFor($user, [
+        'failed_at' => now()->subMinutes(20),
+        'detected_at' => now()->subMinutes(19),
+        'occurrence_index' => 4,
+    ]);
+
+    $analysis = Analysis::factory()->create([
+        'failure_id' => $failure->id,
+        'team_id' => $failure->team_id,
+        'status' => 'completed',
+        'confidence' => 0.92,
+        'model_name' => 'gemini-3.6-flash',
+        'cost_usd' => 0.0023,
+        'completed_at' => now()->subMinutes(18),
+    ]);
+
+    AnalysisFeedback::create([
+        'analysis_id' => $analysis->id,
+        'user_id' => $user->id,
+        'was_helpful' => true,
+    ]);
+
+    $failure->update([
+        'status' => 'resolved',
+        'resolved_at' => now()->subMinutes(2),
+        'resolved_by' => $user->id,
+        'resolution_type' => 'fixed',
+        'resolution_note' => 'Restored the healthcheck',
+    ]);
+
+    $events = $this->actingAs($user)->getJson("/api/v1/failures/{$failure->uuid}/timeline")
+        ->assertOk()->json('data');
+
+    $types = array_column($events, 'type');
+
+    expect($types)->toContain('failed', 'detected', 'analyzed', 'feedback_positive', 'resolved');
+
+    // Ordered, and with no null timestamps sorted to 1970.
+    $timestamps = array_column($events, 'at');
+    $sorted = $timestamps;
+    sort($sorted);
+    expect($timestamps)->toBe($sorted)
+        ->and($timestamps)->not->toContain(null);
+
+    // Recurrence is stated: occurrence #4 is a different situation from a first
+    // sighting, and the reader should not have to work that out.
+    $detected = collect($events)->firstWhere('type', 'detected');
+    expect($detected['detail'])->toContain('#4');
+});
+
+it('reports an analysis failure distinctly from a pipeline failure in the timeline', function () {
+    $user = User::factory()->withTeam()->create();
+    $failure = failureFor($user);
+
+    Analysis::factory()->create([
+        'failure_id' => $failure->id,
+        'team_id' => $failure->team_id,
+        'status' => 'failed',
+        'error' => 'The analysis service is unreachable.',
+        'completed_at' => now(),
+    ]);
+
+    $events = $this->actingAs($user)->getJson("/api/v1/failures/{$failure->uuid}/timeline")
+        ->json('data');
+
+    $entry = collect($events)->firstWhere('type', 'analysis_failed');
+
+    expect($entry)->not->toBeNull()
+        ->and($entry['detail'])->toContain('unreachable');
+});
+
+it('serves recommendations on their own with the patch inline', function () {
+    $user = User::factory()->withTeam()->create();
+    $failure = failureFor($user);
+
+    $analysis = Analysis::factory()->create([
+        'failure_id' => $failure->id, 'team_id' => $failure->team_id, 'status' => 'completed',
+    ]);
+
+    Recommendation::factory()->create([
+        'analysis_id' => $analysis->id,
+        'failure_id' => $failure->id,
+        'patch' => "--- a/x.ts\n+++ b/x.ts\n@@ -1,1 +1,1 @@\n-old\n+new\n",
+    ]);
+
+    $data = $this->actingAs($user)->getJson("/api/v1/failures/{$failure->uuid}/recommendations")
+        ->assertOk()->json('data');
+
+    expect($data)->toHaveCount(1)
+        ->and($data[0]['has_patch'])->toBeTrue()
+        // Inline: it is already bounded to 8 KB, and a second round trip to read
+        // a diff the user is looking at buys nothing.
+        ->and($data[0]['patch'])->toContain('+new');
+});
+
+it('never serves another team\'s timeline', function () {
+    $mine = User::factory()->withTeam()->create();
+    $theirs = User::factory()->withTeam()->create();
+    $failure = failureFor($theirs);
+
+    $this->actingAs($mine)->getJson("/api/v1/failures/{$failure->uuid}/timeline")->assertNotFound();
+    $this->actingAs($mine)->getJson("/api/v1/failures/{$failure->uuid}/recommendations")->assertNotFound();
 });

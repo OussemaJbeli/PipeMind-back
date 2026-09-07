@@ -118,6 +118,19 @@ class AiFakes
         ];
     }
 
+    /** @return array<string,mixed> */
+    public static function providerTest(bool $ok = true, string $message = 'Connected. 12 models available.'): array
+    {
+        return [
+            'ok' => $ok,
+            'provider' => 'gemini',
+            'model' => 'gemini-2.0-flash',
+            'message' => $message,
+            'models' => $ok ? ['gemini-2.0-flash', 'gemini-2.5-flash'] : [],
+            'latency_ms' => 940,
+        ];
+    }
+
     /**
      * Routes one fake to the right payload by path.
      *
@@ -132,6 +145,7 @@ class AiFakes
                 str_contains($request->url(), '/v1/embed') => Http::response(self::embed()),
                 str_contains($request->url(), '/v1/logs/process') => Http::response(self::processLog()),
                 str_contains($request->url(), '/v1/knowledge/chunk-embed') => Http::response(self::chunkEmbed()),
+                str_contains($request->url(), '/v1/providers/test') => Http::response(self::providerTest()),
                 default => Http::response([], 200),
             };
         };

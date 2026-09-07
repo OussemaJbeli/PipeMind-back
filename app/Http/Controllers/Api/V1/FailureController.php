@@ -145,6 +145,102 @@ class FailureController extends Controller
         return ['data' => array_slice($similar, 0, $limit)];
     }
 
+    /**
+     * What happened to this failure, in order.
+     *
+     * Detection, each analysis attempt, feedback and resolution as one ordered
+     * list. Reconstructed from the rows rather than stored as its own log: a
+     * separate timeline table would be a second version of the truth, free to
+     * drift from the first.
+     */
+    public function timeline(Failure $failure): array
+    {
+        $failure->load(['analyses.feedback', 'resolver:id,name']);
+
+        $events = [
+            [
+                'at' => $failure->failed_at?->toIso8601String(),
+                'type' => 'failed',
+                'title' => 'Pipeline failed',
+                'detail' => $failure->error_message,
+            ],
+            [
+                'at' => $failure->detected_at?->toIso8601String(),
+                'type' => 'detected',
+                'title' => 'Failure detected',
+                'detail' => $failure->occurrence_index > 1
+                    ? "Occurrence #{$failure->occurrence_index} of this signature"
+                    : 'First time this signature has been seen',
+            ],
+        ];
+
+        foreach ($failure->analyses as $analysis) {
+            $events[] = [
+                'at' => $analysis->completed_at?->toIso8601String() ?? $analysis->created_at?->toIso8601String(),
+                'type' => $analysis->status->value === 'completed' ? 'analyzed' : 'analysis_failed',
+                'title' => $analysis->status->value === 'completed'
+                    ? 'Analysed'.($analysis->cache_hit ? ' (reused a previous answer)' : '')
+                    : 'Analysis failed',
+                'detail' => $analysis->status->value === 'completed'
+                    ? sprintf('%s · %d%% confidence · %s',
+                        $analysis->model_name ?? 'unknown model',
+                        round(((float) $analysis->confidence) * 100),
+                        $analysis->cache_hit ? 'no cost' : '$'.number_format((float) $analysis->cost_usd, 4))
+                    : $analysis->error,
+                'analysis_uuid' => $analysis->uuid,
+            ];
+
+            foreach ($analysis->feedback as $feedback) {
+                $events[] = [
+                    'at' => $feedback->created_at?->toIso8601String(),
+                    'type' => $feedback->was_helpful ? 'feedback_positive' : 'feedback_negative',
+                    'title' => $feedback->was_helpful ? 'Marked helpful' : 'Marked unhelpful',
+                    'detail' => $feedback->correct_category
+                        ? 'Corrected to '.($feedback->correct_category->value ?? $feedback->correct_category)
+                        : $feedback->comment,
+                ];
+            }
+        }
+
+        if ($failure->resolved_at) {
+            $events[] = [
+                'at' => $failure->resolved_at->toIso8601String(),
+                'type' => $failure->status->value === 'ignored' ? 'ignored' : 'resolved',
+                'title' => $failure->status->value === 'ignored' ? 'Ignored' : 'Resolved',
+                'detail' => $failure->resolution_note
+                    ?? ($failure->resolution_type ? "Marked {$failure->resolution_type}" : null),
+                'by' => $failure->resolver?->name,
+            ];
+        }
+
+        // Undated rows sink rather than jumping to 1970, which is what sorting
+        // a null timestamp ascending would do.
+        $events = array_values(array_filter($events, fn (array $e) => $e['at'] !== null));
+        usort($events, fn (array $a, array $b) => strcmp((string) $a['at'], (string) $b['at']));
+
+        return ['data' => $events];
+    }
+
+    /** Recommendations alone, for a panel that refreshes without the whole page. */
+    public function recommendations(Failure $failure): array
+    {
+        $failure->load('recommendations');
+
+        return ['data' => $failure->recommendations->map(fn ($rec) => [
+            'uuid' => $rec->uuid,
+            'title' => $rec->title,
+            'description' => $rec->description,
+            'rationale' => $rec->rationale,
+            'action_type' => $rec->action_type->value ?? $rec->action_type,
+            'risk' => $rec->risk->value ?? $rec->risk,
+            'confidence' => $rec->confidence !== null ? (float) $rec->confidence : null,
+            'affected_files' => $rec->affected_files ?? [],
+            'has_patch' => filled($rec->patch),
+            'patch' => $rec->patch,
+            'status' => $rec->status,
+        ])->all()];
+    }
+
     private function filtered(Request $request)
     {
         return Failure::query()

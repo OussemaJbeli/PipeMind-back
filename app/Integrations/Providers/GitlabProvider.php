@@ -217,7 +217,7 @@ class GitlabProvider implements PipelineProvider
             externalId: (string) $build['id'],
             name: (string) $build['name'],
             stageName: (string) ($build['stage'] ?? 'unknown'),
-            status: StatusMapper::gitlab($build['status'] ?? null, $build['failure_reason'] ?? null),
+            status: StatusMapper::forJob(StatusMapper::gitlab($build['status'] ?? null, $build['failure_reason'] ?? null)),
             position: $i,
             failureReason: $build['failure_reason'] ?? null,
             allowFailure: (bool) ($build['allow_failure'] ?? false),
@@ -271,7 +271,7 @@ class GitlabProvider implements PipelineProvider
             externalId: (string) $job['id'],
             name: (string) $job['name'],
             stageName: (string) ($job['stage'] ?? 'unknown'),
-            status: StatusMapper::gitlab($job['status'] ?? null, $job['failure_reason'] ?? null),
+            status: StatusMapper::forJob(StatusMapper::gitlab($job['status'] ?? null, $job['failure_reason'] ?? null)),
             position: $i,
             failureReason: $job['failure_reason'] ?? null,
             allowFailure: (bool) ($job['allow_failure'] ?? false),
@@ -321,7 +321,25 @@ class GitlabProvider implements PipelineProvider
             },
             'additions' => substr_count((string) ($diff['diff'] ?? ''), "\n+"),
             'deletions' => substr_count((string) ($diff['diff'] ?? ''), "\n-"),
+            // GitLab already hands us the hunk the counts above were derived
+            // from; keeping it costs nothing and is the difference between
+            // "check this file" and naming the offending line.
+            'patch' => $diff['diff'] ?? null,
         ])->all();
+    }
+
+    public function fetchFileContents(
+        Integration $integration,
+        Project $project,
+        string $path,
+        ?string $ref = null,
+    ): ?string {
+        $response = $this->http($integration)->get(
+            "/projects/{$project->external_id}/repository/files/".rawurlencode(ltrim($path, '/')).'/raw',
+            ['ref' => $ref ?: $project->default_branch ?: 'main'],
+        );
+
+        return $response->successful() ? $response->body() : null;
     }
 
     public function retryJob(Integration $integration, Project $project, PipelineJob $job): array

@@ -69,6 +69,20 @@ interface PipelineProvider
      * never by the AI service.
      */
 
+    /**
+     * Raw file contents at a commit, or null when unavailable.
+     *
+     * Needed so an analysis can quote the line a stack trace points at instead of
+     * describing the file it lives in. Returning null is a normal outcome: the
+     * file may be gitignored, binary, too large, or generated at build time.
+     */
+    public function fetchFileContents(
+        Integration $integration,
+        Project $project,
+        string $path,
+        ?string $ref = null,
+    ): ?string;
+
     public function retryJob(Integration $integration, Project $project, PipelineJob $job): array;
 
     public function retryPipeline(Integration $integration, Project $project, Pipeline $pipeline): array;

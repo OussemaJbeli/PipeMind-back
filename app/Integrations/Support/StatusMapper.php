@@ -30,6 +30,23 @@ final class StatusMapper
         'scheduled' => 'manual',
     ];
 
+    /**
+     * Translates a pipeline status into the job vocabulary.
+     *
+     * The two enums differ by exactly one value: a pipeline can be `queued`, a
+     * job is `pending`. Every provider mapper returns the pipeline vocabulary,
+     * so without this a queued job raises
+     * `"queued" is not a valid backing value for enum JobStatus` — which is what
+     * happened, killing six of eighteen real GitHub job deliveries.
+     *
+     * Applied at the job construction sites rather than inside each provider
+     * mapper, so a new provider inherits it instead of rediscovering it.
+     */
+    public static function forJob(string $status): string
+    {
+        return $status === 'queued' ? 'pending' : $status;
+    }
+
     public static function gitlab(?string $status, ?string $failureReason = null): string
     {
         $mapped = self::GITLAB[strtolower((string) $status)] ?? 'queued';

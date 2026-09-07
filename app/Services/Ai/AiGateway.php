@@ -6,6 +6,8 @@ namespace App\Services\Ai;
 
 use App\Exceptions\Ai\AiBudgetExceeded;
 use App\Exceptions\Ai\AiInvalidResponse;
+use App\Exceptions\Ai\AiProviderRateLimited;
+use App\Exceptions\Ai\AiProviderUnauthorized;
 use App\Exceptions\Ai\AiServiceUnavailable;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
@@ -92,6 +94,24 @@ class AiGateway
         ], timeout: 120);
     }
 
+    /**
+     * Tests credentials before they are saved.
+     *
+     * The payload is the same shape as `llm_override`, so what the wizard tests
+     * is exactly what analysis will later send.
+     *
+     * @return array<string,mixed>
+     */
+    public function testProvider(array $config): array
+    {
+        return $this->call('POST', '/v1/providers/test', [
+            'provider' => $config['provider'],
+            'api_key' => $config['api_key'] ?? null,
+            'model' => $config['model'] ?? null,
+            'base_url' => $config['base_url'] ?? null,
+        ], timeout: 30);
+    }
+
     /** @return array<string,mixed> */
     public function info(): array
     {
@@ -130,6 +150,12 @@ class AiGateway
 
         throw match ($code) {
             'AI_BUDGET_EXCEEDED' => new AiBudgetExceeded($message),
+            // A rejected key is a configuration mistake, not an outage. Routing
+            // it to AiServiceUnavailable would make the queue retry a typo.
+            'AI_PROVIDER_UNAUTHORIZED' => new AiProviderUnauthorized($message),
+            // Not an outage. Reporting a spent quota as "service unreachable"
+            // sends the user to check containers for a problem that isn't there.
+            'AI_PROVIDER_RATE_LIMITED' => new AiProviderRateLimited($message),
             'AI_INVALID_RESPONSE', 'AI_REDACTION_FAILED' => new AiInvalidResponse($message),
             default => new AiServiceUnavailable($message),
         };

@@ -1,0 +1,2155 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to function is_string\(\) with array\<int, float\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Casts/Vector.php
+
+		-
+			message: '#^Parameter \#1 \$team of function withTeam expects App\\Models\\Team, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Console/Commands/DetectAnomalies.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/AiProviderController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/AnalysisController.php
+
+		-
+			message: '#^Parameter \#1 \$failure of method App\\Services\\Ai\\AnalysisCache\:\:forget\(\) expects App\\Models\\Failure, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalysisController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnalysisController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnomalyController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnomalyController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Http/Controllers/Api/V1/AnomalyController.php
+
+		-
+			message: '#^Parameter \#1 \$project of function activity_log expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnomalyController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/V1/AnomalyController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Failure\:\:\$previous_pipeline\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$action_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cache_hit\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$confidence\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$cost_usd\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$error\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$feedback\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$patch\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$rationale\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$raw_response\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$risk\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_values contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#1 \$array of function usort contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#1 \$pipeline of method App\\Http\\Controllers\\Api\\V1\\FailureController\:\:previousPipeline\(\) expects App\\Models\\Pipeline, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#1 \$project of function activity_log expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Parameter \#2 \$callback of function usort contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/FailureController.php
+
+		-
+			message: '#^Offset ''account'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Http/Controllers/Api/V1/IntegrationController.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Services\\Integrations\\WebhookRegistrar\:\:unregister\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/IntegrationController.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Api/V1/IntegrationController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between \*NEVER\* and string will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Http/Controllers/Api/V1/IntegrationController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and null will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Api/V1/IntegrationController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$error_block\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$excerpt\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$excerpt_end_line\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$excerpt_start_line\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_redacted\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$line_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$redaction_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$size_bytes\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$stack_trace\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$truncated\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/JobLogController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$pivot\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:users\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MemberController\:\:member\(\) should return App\\Models\\User but returns Illuminate\\Database\\Eloquent\\Model&object\{pivot\: Illuminate\\Database\\Eloquent\\Relations\\Pivot\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Api\\V1\\MemberController\:\:roles\(\) should return array\<int, array\<string, string\>\> but returns array\<string, array\<int, array\<string, array\<int, string\>\|string\>\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{uuid\: string, email\: string, role\: string, expires_at\: mixed, expired\: mixed, invited_at\: string\|null\}, Closure\(App\\Models\\TeamInvitation\)\: array\{uuid\: string, email\: string, role\: string, expires_at\: mixed, expired\: mixed, invited_at\: string\|null\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{uuid\: string\|null, name\: string, email\: string, initials\: string, avatar_url\: string\|null, job_title\: string\|null, role\: mixed, joined_at\: mixed, is_owner\: bool, is_you\: bool\}, Closure\(App\\Models\\User\)\: array\{uuid\: string\|null, name\: string, email\: string, initials\: string, avatar_url\: string\|null, job_title\: string\|null, role\: mixed, joined_at\: mixed, is_owner\: bool, is_you\: bool\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/MemberController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_author_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_sha\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_short_sha\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$duration_seconds\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$failures\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$finished_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$iid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$jobs\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$jobs_failed\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$jobs_total\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$provider\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$queue_seconds\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$ref\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$source\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$stages\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$started_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$web_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to protected property Illuminate\\Database\\Eloquent\\Model\:\:\$changes\.$#'
+			identifier: property.protected
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Cannot call method map\(\) on array\<string, mixed\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Parameter \#1 \$project of method App\\Http\\Controllers\\Api\\V1\\PipelineController\:\:show\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/PipelineController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Cannot call method color\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Failure\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\Pipeline\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Controllers/Api/V1/SearchController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Api/V1/SignatureController.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Api/V1/SignatureController.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: app/Http/Controllers/Api/V1/SignatureController.php
+
+		-
+			message: '#^Parameter \#1 \$failure of method App\\Services\\Ai\\AnalysisCache\:\:forget\(\) expects App\\Models\\Failure, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Api/V1/SignatureController.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Http/Controllers/Api/V1/SignatureController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between \(bool\|Redis\|string\) and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: app/Http/Controllers/Api/V1/SystemStatusController.php
+
+		-
+			message: '#^Call to function is_array\(\) with list\<string\|null\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Http/Controllers/Api/V1/Webhooks/WebhookController.php
+
+		-
+			message: '#^Offset ''timezone'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Http/Controllers/Api/V1/WorkspaceSettingsController.php
+
+		-
+			message: '#^Offset ''webhook_base_url'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Http/Controllers/Api/V1/WorkspaceSettingsController.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$action\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$actor_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$description\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$level\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$subject_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$subject_uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ActivityResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ActivityResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$avatar_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$currentTeam\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$job_title\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$onboarded_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$teams\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$theme\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$timezone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\AuthUserResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\AuthUserResource\:\:initials\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\AuthUserResource\:\:permissions\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\AuthUserResource\:\:roleIn\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/AuthUserResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$category\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$ecosystem\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$error_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$error_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$exit_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$failed_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$is_flaky\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$is_transient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$job\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$job_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$latestAnalysis\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$occurrence_index\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$pipeline\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$previous_pipeline\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$recommendations\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$resolution_note\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$resolution_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$resolved_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$severity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$stage_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$subcategory\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureDetailResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$content\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$line_number\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$source_ref\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$was_helpful\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$weight\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Cannot call method toIso8601String\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Http/Resources/FailureDetailResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$category\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$error_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$failed_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$is_flaky\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$is_transient\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$job_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$latestAnalysis\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$occurrence_index\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$pipeline\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$resolved_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$severity\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$stage_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$subcategory\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$time_to_resolution_seconds\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\FailureListResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/FailureListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$base_url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$last_error\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$last_event_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$last_verified_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$provider\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\IntegrationResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\IntegrationResource\:\:isCloudInstance\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\IntegrationResource\:\:looksStale\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\IntegrationResource\:\:webhookUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/IntegrationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$commit_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$commit_short_sha\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$duration_seconds\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$failures\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$finished_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$has_failure\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$iid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$provider\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$ref\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$source\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\PipelineListResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\PipelineListResource\:\:relationLoaded\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/PipelineListResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$color\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$failures_today\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$health_status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$icon\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$integration\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$last_pipeline_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$pipelines_count\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$success_rate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\ProjectCardResource\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Call to an undefined method App\\Http\\Resources\\ProjectCardResource\:\:relationLoaded\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Resources/ProjectCardResource.php
+
+		-
+			message: '#^Call to function is_string\(\) with null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Integrations/Providers/GenericProvider.php
+
+		-
+			message: '#^Offset ''log'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Integrations/Providers/GenericProvider.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Integrations/Providers/GenericProvider.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between \*NEVER\* and '''' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Integrations/Providers/GenericProvider.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Integrations/Providers/GenericProvider.php
+
+		-
+			message: '#^Expression on left side of \?\? is always null\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 2
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Offset ''token'' on array\{\}\|string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Offset ''url'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Offset ''username'' on array\{\}\|string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Offset ''username'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: app/Integrations/Providers/JenkinsProvider.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/AnalyzeFailure.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$auto_analyze\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:shouldAnalyzeRef\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Parameter \#1 \$project of function activity_log expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Jobs/DetectFailure.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/EmbedFailure.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Jobs/EmbedFailure.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type string\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Jobs/EmbedFailure.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/FetchJobLog.php
+
+		-
+			message: '#^Parameter \#1 \$team of function withTeam expects App\\Models\\Team, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/IndexKnowledgeDocument.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$exit_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessJobLog.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessJobLog.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$stage_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessJobLog.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessJobLog.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/ProcessPipelineEvent.php
+
+		-
+			message: '#^Parameter \#1 \$integration of method App\\Integrations\\ProviderRegistry\:\:for\(\) expects App\\Models\\Integration, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/ProcessPipelineEvent.php
+
+		-
+			message: '#^Parameter \#1 \$integration of method App\\Services\\Ingestion\\PipelineIngestor\:\:ingest\(\) expects App\\Models\\Integration, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/ProcessPipelineEvent.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>external_object_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Jobs/ProcessPipelineEvent.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>integration_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Jobs/ProcessPipelineEvent.php
+
+		-
+			message: '#^Parameter \#1 \$team of function withTeam expects App\\Models\\Team, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/RefreshProjectStats.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$integration\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/SyncCommitChanges.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Integrations\\Contracts\\PipelineProvider\:\:fetchCommitChanges\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/SyncCommitChanges.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$integration\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Jobs/SyncPipeline.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Integrations\\Contracts\\PipelineProvider\:\:fetchJobs\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/SyncPipeline.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Integrations\\Contracts\\PipelineProvider\:\:fetchPipeline\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Jobs/SyncPipeline.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:webhookBaseUrl\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Models/Integration.php
+
+		-
+			message: '#^Offset ''token'' on string\|null on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Models/Integration.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Result of \|\| is always true\.$#'
+			identifier: booleanOr.alwaysTrue
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''\*'' and ''\*'' will always evaluate to true\.$#'
+			identifier: identical.alwaysTrue
+			count: 1
+			path: app/Models/Project.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/Remediation.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\RemediationStatus\:\:PENDING_APPROVAL will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Models/Remediation.php
+
+		-
+			message: '#^Cannot unset offset ''webhook_base_url'' on array\{\}\|string\.$#'
+			identifier: unset.offset
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Method App\\Models\\Team\:\:defaultAiProvider\(\) should return App\\Models\\AiProvider\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Offset ''webhook_base_url'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Ternary operator condition is always false\.$#'
+			identifier: ternary.alwaysFalse
+			count: 1
+			path: app/Models/Team.php
+
+		-
+			message: '#^Cannot call method isPast\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Models/TeamInvitation.php
+
+		-
+			message: '#^Parameter \#1 \$team of method App\\Models\\User\:\:roleIn\(\) expects App\\Models\\Team, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$ai_provider_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AiRequestRecorder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$hash\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Ai/AnalysisCache.php
+
+		-
+			message: '#^Call to function is_array\(\) with string\|null will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: app/Services/Ai/AnalysisCache.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: app/Services/Ai/AnalysisCache.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: app/Services/Ai/AnalysisCache.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$additions\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$change_type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_short_sha\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$default_branch\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$deletions\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$duration_seconds\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$exit_code\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$failure_reason\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$file_path\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$hash\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$iid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_config\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_dependency\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$log\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$patch\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$patch_truncated\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$ref\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$source\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$stage_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$uuid\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:pipelines\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$pipeline of method App\\Services\\Ai\\AnalysisContextBuilder\:\:changedFiles\(\) expects App\\Models\\Pipeline, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$pipeline of method App\\Services\\Ai\\AnalysisContextBuilder\:\:previousStatus\(\) expects App\\Models\\Pipeline, Illuminate\\Database\\Eloquent\\Model given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>excerpt" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>provider" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Ai/AnalysisContextBuilder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/AnalysisPersister.php
+
+		-
+			message: '#^Parameter \#1 \$project of function activity_log expects App\\Models\\Project\|null, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ai/AnalysisPersister.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$commit_sha\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$integration\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$log\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Offset 3 on \*NEVER\* on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Offset 4 on \*NEVER\* on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Parameter \#2 \$project of method App\\Integrations\\Contracts\\PipelineProvider\:\:fetchFileContents\(\) expects App\\Models\\Project, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between non\-empty\-string and '''' will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between non\-empty\-string and '''' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Services/Ai/SourceContextResolver.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Anomalies/AnomalyDetector.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Anomalies/AnomalyRecorder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$default_branch\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$team_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and App\\Enums\\FailureCategory\:\:UNKNOWN will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/Failures/FailureDetectionService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$finished_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Cannot call method isFailure\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Cannot call method isTerminal\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Support\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:each\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: mixed, Closure\(App\\Models\\PipelineJob\)\: Illuminate\\Foundation\\Bus\\PendingDispatch given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#1 \$payload of method App\\Integrations\\Contracts\\PipelineProvider\:\:normalizeJobs\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#1 \$payload of method App\\Integrations\\Contracts\\PipelineProvider\:\:normalizePipeline\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#3 \$payload of method App\\Services\\Ingestion\\PipelineIngestor\:\:ingestJobOnly\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#3 \$payload of method App\\Services\\Ingestion\\PipelineIngestor\:\:resolveProject\(\) expects array, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Ingestion/PipelineIngestor.php
+
+		-
+			message: '#^Parameter \#1 \$team of method App\\Services\\Integrations\\ConnectionTester\:\:test\(\) expects App\\Models\\Team, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Integrations/ConnectionTester.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:webhookUrlIsReachable\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^Negated boolean expression is always true\.$#'
+			identifier: booleanNot.alwaysTrue
+			count: 1
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^Offset ''webhook_id'' on string on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 2
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,Illuminate\\Database\\Eloquent\\Model\>\:\:map\(\) expects callable\(Illuminate\\Database\\Eloquent\\Model, int\)\: array\{project\: string, slug\: string, ok\: bool, error\: string\|null\}, Closure\(App\\Models\\Project\)\: array\{project\: string, slug\: string, ok\: bool, error\: string\|null\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: app/Services/Integrations/WebhookRegistrar.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Logs/LogStorage.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>total" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: app/Services/Projects/ProjectAnalyticsService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Failure\:\:\$occurrences\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Projects/ProjectInsightService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$is_known\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Projects/ProjectInsightService.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Projects/ProjectInsightService.php
+
+		-
+			message: '#^Cannot call method label\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Projects/ProjectInsightService.php
+
+		-
+			message: '#^Cannot call method toDateString\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Projects/ProjectOverviewService.php
+
+		-
+			message: '#^Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection\<int,App\\Models\\ProjectMetricDaily\>\:\:map\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: app/Services/Projects/ProjectOverviewService.php
+
+		-
+			message: '#^Function currentTeam\(\) should return App\\Models\\Team\|null but returns Illuminate\\Database\\Eloquent\\Model\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>team_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Support/helpers.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/CommitChangeFactory.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>project_id" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: database/factories/CommitChangeFactory.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$project_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/JobLogFactory.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: database/factories/UserFactory.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Database\\Eloquent\\Model\:\:teams\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$finished_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Cannot access property \$value on string\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Cannot call method addSeconds\(\) on string\.$#'
+			identifier: method.nonObject
+			count: 4
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Method Database\\Seeders\\DemoSeeder\:\:seedAiProvider\(\) should return App\\Models\\AiProvider but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: database/seeders/DemoSeeder.php
+
+		-
+			message: '#^Method Database\\Seeders\\DemoSeeder\:\:seedIntegration\(\) should return App\\Models\\Integration but returns Illuminate\\Database\\Eloquent\\Model\.$#'
+			identifier: return.type
+			count: 1
+			path: database/seeders/DemoSeeder.php

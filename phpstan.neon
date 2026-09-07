@@ -1,0 +1,23 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    # Pre-existing findings, acknowledged rather than fixed in bulk. CI then
+    # enforces "no NEW errors", which is what actually protects the codebase —
+    # a gate that fails on day one gets disabled by the end of the week.
+    #
+    # Regenerate deliberately, never casually:
+    #   vendor/bin/phpstan analyse --generate-baseline
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app
+        - database
+        - routes
+
+    # Level 5 is where Larastan starts being useful without demanding that every
+    # Eloquent magic property be annotated. Raising it later is a deliberate task,
+    # not something to discover mid-CI-run.
+    level: 5
+
+    # Level 5 already caught a real defect on its first run: a public health
+    # endpoint calling AiGateway::reachable(), a method that does not exist.

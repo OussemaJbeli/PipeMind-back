@@ -9,6 +9,7 @@ use App\Models\AiProvider;
 use App\Models\Failure;
 use App\Models\JobBaseline;
 use App\Models\Pipeline;
+use BackedEnum;
 use Illuminate\Support\Str;
 
 /**
@@ -19,6 +20,10 @@ use Illuminate\Support\Str;
  */
 class AnalysisContextBuilder
 {
+    public function __construct(
+        private readonly SourceContextResolver $source,
+    ) {}
+
     /** @return array<string,mixed> */
     public function build(Failure $failure): array
     {
@@ -47,6 +52,10 @@ class AnalysisContextBuilder
             ],
 
             'project' => [
+                // The AI service scopes knowledge_documents.project_id on this.
+                // Read off the failure's own FK rather than through the
+                // relation: same value, and it is already loaded.
+                'id' => $failure->project_id,
                 'uuid' => $project->uuid,
                 'name' => $project->name,
                 'tech_stack' => $project->tech_stack ?? [],
@@ -85,21 +94,34 @@ class AnalysisContextBuilder
             'error_block' => $log?->error_block,
             'stack_trace' => $log?->stack_trace,
 
+            // The code itself. Without these two the model is told a filename
+            // and asked to explain what went wrong inside it — which is why
+            // every recommendation used to read "check the recent changes".
+            'source_context' => $this->source->resolve($failure),
+
             'use_rag' => true,
             'use_llm' => true,
             'llm_override' => $this->providerOverride($failure),
         ];
     }
 
-    /** Status of the last pipeline on this ref before this one. */
+    /**
+     * Status of the last pipeline on this ref before this one.
+     *
+     * `value()` applies the model's casts, so this comes back as a PipelineStatus
+     * enum rather than a string — and the payload is about to be JSON-encoded for
+     * another service, which has no idea what a PHP enum is.
+     */
     protected function previousStatus(Pipeline $pipeline): ?string
     {
-        return $pipeline->project->pipelines()
+        $status = $pipeline->project->pipelines()
             ->where('ref', $pipeline->ref)
             ->where('id', '<', $pipeline->id)
             ->whereIn('status', ['success', 'failed'])
             ->reorder('id', 'desc')
             ->value('status');
+
+        return $status instanceof BackedEnum ? (string) $status->value : $status;
     }
 
     /**
@@ -120,6 +142,11 @@ class AnalysisContextBuilder
                 'deletions' => $change->deletions,
                 'is_config' => (bool) $change->is_config,
                 'is_dependency' => (bool) $change->is_dependency,
+                // The hunk, not just the counts. Both providers already return
+                // it; storing and forwarding it is the whole difference between
+                // naming a line and naming a file.
+                'patch' => $change->patch,
+                'patch_truncated' => (bool) $change->patch_truncated,
             ])
             ->values()
             ->all();

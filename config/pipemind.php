@@ -11,6 +11,10 @@ return [
     | The Python intelligence layer. Internal network only — never exposed
     | publicly. Laravel is its only client.
     */
+    // Where the SPA lives. Needed for invitation links, which must point at the
+    // frontend rather than the API — an invitee clicking an API URL sees JSON.
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
+
     'ai' => [
         'url' => env('AI_SERVICE_URL', 'http://localhost:8001'),
         'token' => env('AI_SERVICE_TOKEN'),

@@ -13,6 +13,9 @@ use Illuminate\Foundation\Queue\Queueable;
 
 class SyncCommitChanges implements ShouldQueue
 {
+    /** ~40 KB: enough for any hand-written change, far short of a lockfile. */
+    private const MAX_PATCH_BYTES = 40_000;
+
     use Queueable;
 
     public int $tries = 3;
@@ -51,11 +54,34 @@ class SyncCommitChanges implements ShouldQueue
                         'deletions' => $change['deletions'] ?? 0,
                         'language' => $signals->language($change['file_path']),
                         // The two highest-signal features for root-cause correlation.
+                        'patch' => $this->boundedPatch($change['patch'] ?? null),
+                        'patch_truncated' => $this->wouldTruncate($change['patch'] ?? null),
                         'is_config' => $signals->isConfig($change['file_path']),
                         'is_dependency' => $signals->isDependency($change['file_path']),
                     ],
                 );
             }
         });
+    }
+
+    /**
+     * A lockfile diff runs to megabytes and carries no diagnostic value, while
+     * the hunk that actually broke the build is almost always small. Keeping the
+     * head of the diff bounds both the row size and the prompt built from it.
+     */
+    protected function boundedPatch(?string $patch): ?string
+    {
+        if ($patch === null || $patch === '') {
+            return null;
+        }
+
+        return strlen($patch) > self::MAX_PATCH_BYTES
+            ? substr($patch, 0, self::MAX_PATCH_BYTES)
+            : $patch;
+    }
+
+    protected function wouldTruncate(?string $patch): bool
+    {
+        return $patch !== null && strlen($patch) > self::MAX_PATCH_BYTES;
     }
 }

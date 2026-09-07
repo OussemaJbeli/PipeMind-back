@@ -29,4 +29,23 @@ class MeController extends Controller
 
         return ['data' => (new AuthUserResource($request->user()->fresh()->load('teams')))->resolve($request)];
     }
+
+    /**
+     * Marks onboarding finished, so the router guard stops redirecting.
+     *
+     * Separate from the wizard's own steps on purpose: onboarding is complete
+     * when the user says so — including by skipping — not when some checklist
+     * happens to be satisfied. Deriving it would trap anyone who legitimately
+     * wants no AI provider yet.
+     */
+    public function completeOnboarding(Request $request): array
+    {
+        $user = $request->user();
+
+        if (! $user->onboarded_at) {
+            $user->forceFill(['onboarded_at' => now()])->save();
+        }
+
+        return ['data' => (new AuthUserResource($user->fresh()->load('teams')))->resolve($request)];
+    }
 }

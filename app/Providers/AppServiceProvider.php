@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Failure;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -30,6 +31,24 @@ class AppServiceProvider extends ServiceProvider
         // once a project has thousands of pipelines.
         Model::preventLazyLoading(! $this->app->isProduction());
         Model::preventSilentlyDiscardingAttributes(! $this->app->isProduction());
+
+        $this->configurePasswordReset();
+    }
+
+    /**
+     * Points the reset link at the SPA, not the API.
+     *
+     * The default URL is an API route that renders JSON, so a user clicking the
+     * link in their inbox would be shown a raw payload instead of a form.
+     */
+    private function configurePasswordReset(): void
+    {
+        ResetPassword::createUrlUsing(fn (object $notifiable, string $token) => sprintf(
+            '%s/reset-password/%s?email=%s',
+            rtrim((string) config('pipemind.frontend_url'), '/'),
+            $token,
+            urlencode($notifiable->getEmailForPasswordReset()),
+        ));
     }
 
     private function configureRateLimiting(): void

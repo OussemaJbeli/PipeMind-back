@@ -92,7 +92,7 @@ class JenkinsProvider extends GenericProvider
                 externalId: (string) ($payload['build'] ?? '0'),
                 name: (string) ($payload['job'] ?? 'build'),
                 stageName: 'build',
-                status: StatusMapper::jenkins($payload['result'] ?? null, (bool) ($payload['building'] ?? false)),
+                status: StatusMapper::forJob(StatusMapper::jenkins($payload['result'] ?? null, (bool) ($payload['building'] ?? false))),
                 raw: $payload,
             )];
         }
@@ -102,7 +102,7 @@ class JenkinsProvider extends GenericProvider
                 externalId: (string) ($stage['id'] ?? $i),
                 name: (string) ($stage['name'] ?? "stage-{$i}"),
                 stageName: (string) ($stage['name'] ?? "stage-{$i}"),
-                status: StatusMapper::jenkins($stage['status'] ?? null),
+                status: StatusMapper::forJob(StatusMapper::jenkins($stage['status'] ?? null)),
                 position: $i,
                 durationSeconds: isset($stage['durationMillis'])
                     ? (int) round(((int) $stage['durationMillis']) / 1000)
@@ -134,6 +134,16 @@ class JenkinsProvider extends GenericProvider
         }
 
         return $response->body();
+    }
+
+    /** Jenkins has no repository API — it builds source it does not host. */
+    public function fetchFileContents(
+        Integration $integration,
+        Project $project,
+        string $path,
+        ?string $ref = null,
+    ): ?string {
+        return null;
     }
 
     public function retryJob(Integration $integration, Project $project, PipelineJob $job): array

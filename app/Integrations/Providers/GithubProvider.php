@@ -265,7 +265,7 @@ class GithubProvider implements PipelineProvider
             name: (string) $job['name'],
             // GitHub has no stage concept; the workflow name is the closest analogue.
             stageName: (string) ($job['workflow_name'] ?? 'workflow'),
-            status: StatusMapper::github($job['status'] ?? null, $job['conclusion'] ?? null),
+            status: StatusMapper::forJob(StatusMapper::github($job['status'] ?? null, $job['conclusion'] ?? null)),
             position: $position,
             runnerName: $job['runner_name'] ?? null,
             runnerTags: (array) ($job['labels'] ?? []),
@@ -390,7 +390,27 @@ class GithubProvider implements PipelineProvider
             },
             'additions' => (int) ($file['additions'] ?? 0),
             'deletions' => (int) ($file['deletions'] ?? 0),
+            // GitHub omits `patch` entirely for binary files and for diffs over
+            // its own size limit, so null here is normal rather than an error.
+            'patch' => $file['patch'] ?? null,
         ])->all();
+    }
+
+    public function fetchFileContents(
+        Integration $integration,
+        Project $project,
+        string $path,
+        ?string $ref = null,
+    ): ?string {
+        // The raw media type returns the file itself rather than base64 inside
+        // JSON, which avoids decoding a blob just to read six lines of it.
+        $response = $this->http($integration)
+            ->withHeaders(['Accept' => 'application/vnd.github.raw+json'])
+            ->get("/repos/{$project->external_path}/contents/".ltrim($path, '/'), array_filter([
+                'ref' => $ref,
+            ]));
+
+        return $response->successful() ? $response->body() : null;
     }
 
     public function retryJob(Integration $integration, Project $project, PipelineJob $job): array

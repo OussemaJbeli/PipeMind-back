@@ -11,6 +11,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Larastan reads neither the `casts()` method's enum entries nor
+ * `immutable_datetime` at level 5, so without these it infers the raw
+ * column types.
+ *
+ * @property string $uuid
+ * @property string $type
+ * @property Severity $severity
+ * @property string $metric_name
+ * @property string $title
+ * @property string|null $description
+ */
 class Anomaly extends Model
 {
     use BelongsToTeam,  HasFactory, HasUuid;
@@ -31,6 +43,7 @@ class Anomaly extends Model
         ];
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

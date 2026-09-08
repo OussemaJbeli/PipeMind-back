@@ -55,7 +55,13 @@ class GithubProvider implements PipelineProvider
 
         throw match ($response->status()) {
             401 => new IntegrationUnauthorized("GitHub rejected the token ({$context}). {$detail}"),
-            403 => (int) $response->header('X-RateLimit-Remaining') === 0
+            // The header must be PRESENT and zero. `(int) null === 0` is also
+            // true, so treating a missing header as exhaustion reported every
+            // permission error as a rate limit — and a read-only token is the
+            // most common 403 here, which sent people away to wait instead of
+            // widening the token's scope.
+            403 => $response->header('X-RateLimit-Remaining') !== ''
+                && (int) $response->header('X-RateLimit-Remaining') === 0
                 ? new ProviderRateLimited("GitHub rate limit exhausted ({$context}).")
                 : new IntegrationUnauthorized("GitHub denied access ({$context}). {$detail}"),
             429 => new ProviderRateLimited("GitHub is rate limiting requests ({$context})."),
@@ -449,6 +455,90 @@ class GithubProvider implements PipelineProvider
             ]),
             'create issue',
         )->json();
+    }
+
+    public function supportsMergeRequests(): bool
+    {
+        return true;
+    }
+
+    public function createBranch(Integration $integration, Project $project, string $branch, string $fromSha): void
+    {
+        $this->guard(
+            $this->http($integration)->post("/repos/{$project->external_path}/git/refs", [
+                'ref' => 'refs/heads/'.$branch,
+                'sha' => $fromSha,
+            ]),
+            "create branch {$branch}",
+        );
+    }
+
+    /**
+     * @param  array<string,string>  $files
+     * @return array<string,mixed>
+     */
+    public function commitFiles(
+        Integration $integration,
+        Project $project,
+        string $branch,
+        array $files,
+        string $message,
+    ): array {
+        $last = [];
+
+        // One commit per file: the contents API has no multi-file form, and
+        // building a tree by hand would mean four more calls per file. A handful
+        // of commits on a throwaway branch is a fair trade for that.
+        foreach ($files as $path => $contents) {
+            $path = ltrim($path, '/');
+
+            $last = $this->guard(
+                $this->http($integration)->put(
+                    "/repos/{$project->external_path}/contents/{$path}",
+                    array_filter([
+                        'message' => $message,
+                        'content' => base64_encode($contents),
+                        'branch' => $branch,
+                        // Updating an existing file requires its current blob
+                        // sha; omitting it creates a file and fails if one is
+                        // already there.
+                        'sha' => $this->blobSha($integration, $project, $path, $branch),
+                    ], fn ($value) => $value !== null),
+                ),
+                "commit {$path}",
+            )->json() ?? [];
+        }
+
+        return $last;
+    }
+
+    /** @return array<string,mixed> */
+    public function openMergeRequest(
+        Integration $integration,
+        Project $project,
+        string $head,
+        string $base,
+        string $title,
+        string $body,
+    ): array {
+        return $this->guard(
+            $this->http($integration)->post("/repos/{$project->external_path}/pulls", [
+                'title' => $title,
+                'head' => $head,
+                'base' => $base,
+                'body' => $body,
+            ]),
+            'open pull request',
+        )->json() ?? [];
+    }
+
+    /** The blob sha of a file on a branch, or null when it does not exist yet. */
+    private function blobSha(Integration $integration, Project $project, string $path, string $branch): ?string
+    {
+        $response = $this->http($integration)
+            ->get("/repos/{$project->external_path}/contents/{$path}", ['ref' => $branch]);
+
+        return $response->successful() ? $response->json('sha') : null;
     }
 
     protected function header(array $headers, string $name): ?string

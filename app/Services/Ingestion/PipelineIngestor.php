@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Ingestion;
 
+use App\Events\JobUpdated;
+use App\Events\PipelineUpdated;
 use App\Integrations\Contracts\PipelineProvider;
 use App\Integrations\DTO\NormalizedJob;
 use App\Integrations\DTO\NormalizedPipeline;
@@ -112,6 +114,8 @@ class PipelineIngestor
             return null;
         }
 
+        $pipeline->setRelation('project', $project);
+
         $jobs = $adapter->normalizeJobs($payload);
 
         DB::transaction(function () use ($pipeline, $jobs, $event, $project): void {
@@ -183,6 +187,12 @@ class PipelineIngestor
         $pipeline->project_id = $project->id;
         $pipeline->save();
 
+        // Attached explicitly, not left to lazy loading. Ingestion runs from a
+        // webhook and a queued job with NO TEAM BOUND, so `$pipeline->project`
+        // would resolve through TeamScope and come back null — which is how a
+        // broadcast built from it managed to 500 the webhook endpoint.
+        $pipeline->setRelation('project', $project);
+
         return $pipeline;
     }
 
@@ -216,7 +226,18 @@ class PipelineIngestor
 
             $job->pipeline_id = $pipeline->id;
             $job->stage_id = $stages[$stageName]->id;
+
+            // Captured before save: `isDirty` is empty afterwards.
+            $statusChanged = $job->isDirty('status') || ! $job->exists;
+
             $job->save();
+
+            // Only on a real transition. Every delivery re-saves every job, so
+            // broadcasting each one would put dozens of identical frames on the
+            // socket for a single webhook.
+            if ($statusChanged) {
+                JobUpdated::dispatch($job->setRelation('pipeline', $pipeline));
+            }
         }
 
         foreach ($stages as $name => $stage) {
@@ -269,6 +290,12 @@ class PipelineIngestor
             'jobs_succeeded' => (int) ($counts->succeeded ?? 0),
             'has_failure' => (int) ($counts->failed ?? 0) > 0,
         ])->save();
+
+        // Broadcast here rather than at each call site: both the full ingest and
+        // the job-only path funnel through this method, and the counters are
+        // part of the payload — announcing before they settle would send figures
+        // the UI then has to correct.
+        PipelineUpdated::dispatch($pipeline->loadMissing('project'));
     }
 
     protected function dispatchFollowUp(

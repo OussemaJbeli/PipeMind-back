@@ -7,12 +7,37 @@ namespace App\Models;
 use App\Enums\PipelineStatus;
 use App\Models\Concerns\HasUuid;
 use App\Models\Concerns\ScopedThroughProject;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Larastan reads neither the `casts()` method's enum entries nor
+ * `immutable_datetime` at level 5, so without these it infers the raw
+ * column types and every enum method call on them looks like a call on a
+ * string.
+ *
+ * @property int $id
+ * @property string $uuid
+ * @property int $project_id
+ * @property string $external_id
+ * @property int $iid
+ * @property PipelineStatus $status
+ * @property string $ref
+ * @property string|null $commit_sha
+ * @property string|null $commit_short_sha
+ * @property string|null $commit_message
+ * @property string|null $web_url
+ * @property int|null $duration_seconds
+ * @property bool $has_failure
+ * @property array<string,mixed>|null $raw_payload
+ * @property CarbonImmutable|null $queued_at
+ * @property CarbonImmutable|null $started_at
+ * @property CarbonImmutable|null $finished_at
+ */
 class Pipeline extends Model
 {
     use HasFactory, HasUuid, ScopedThroughProject;
@@ -37,6 +62,7 @@ class Pipeline extends Model
         return 'project';
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

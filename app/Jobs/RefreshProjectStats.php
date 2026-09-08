@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Console\Commands\RollupMetrics;
+use App\Events\ProjectStatsUpdated;
 use App\Models\Project;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -82,6 +85,29 @@ class RefreshProjectStats implements ShouldQueue
                     default => 'healthy',
                 },
             ])->save();
+
+            /*
+             * Roll up today's metrics row too.
+             *
+             * The KPI tiles and every trend chart read `project_metrics_daily`,
+             * which the hourly `pipemind:rollup-metrics` schedule maintains. A
+             * project whose pipelines all arrived since the last run therefore
+             * shows five zeros — indistinguishable from a broken dashboard, and
+             * exactly what a brand-new project sees for its first hour.
+             *
+             * Recomputing one project's single current day is a bounded query,
+             * and it makes the board correct the moment a run lands rather than
+             * whenever cron next fires.
+             */
+            Artisan::call(RollupMetrics::class, [
+                '--project' => $project->slug,
+                '--days' => 1,
+            ]);
+
+            // The header counters are recomputed here, after ingestion settles —
+            // broadcasting them with the pipeline event would send figures that
+            // are one run out of date.
+            ProjectStatsUpdated::dispatch($project);
         });
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Integrations\Contracts;
 
+use App\Exceptions\Integrations\IntegrationUnauthorized;
 use App\Integrations\DTO\NormalizedJob;
 use App\Integrations\DTO\NormalizedPipeline;
 use App\Integrations\DTO\ProviderIdentity;
@@ -90,4 +91,47 @@ interface PipelineProvider
     public function cancelPipeline(Integration $integration, Project $project, Pipeline $pipeline): void;
 
     public function createIssue(Integration $integration, Project $project, string $title, string $body): array;
+
+    /*
+     * Repository writes. Only reached by CreateMergeRequestExecutor, only after
+     * the policy gate and a human approval, and never against the default
+     * branch — the whole point of proposing a change as a pull request is that
+     * somebody still reviews it.
+     */
+
+    /** Does this provider host a repository we can commit to at all? */
+    public function supportsMergeRequests(): bool;
+
+    /**
+     * Creates a branch at $fromSha.
+     *
+     * @throws IntegrationUnauthorized when the
+     *                                 token cannot write — a read-only token is the common case and the error
+     *                                 has to say so rather than surface as a generic failure.
+     */
+    public function createBranch(Integration $integration, Project $project, string $branch, string $fromSha): void;
+
+    /**
+     * Commits file contents to an existing branch.
+     *
+     * @param  array<string,string>  $files  path => complete new contents
+     * @return array<string,mixed> the provider's commit payload
+     */
+    public function commitFiles(
+        Integration $integration,
+        Project $project,
+        string $branch,
+        array $files,
+        string $message,
+    ): array;
+
+    /** @return array<string,mixed> the provider's merge/pull request payload */
+    public function openMergeRequest(
+        Integration $integration,
+        Project $project,
+        string $head,
+        string $base,
+        string $title,
+        string $body,
+    ): array;
 }

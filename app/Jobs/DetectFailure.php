@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Events\FailureDetected;
 use App\Models\Pipeline;
 use App\Models\PipelineJob;
 use App\Services\Failures\FailureDetectionService;
@@ -66,6 +67,10 @@ class DetectFailure implements ShouldQueue
                 sprintf('Pipeline #%s failed on %s', $pipeline->iid, $job?->name ?? 'the pipeline'),
                 $failure,
             );
+
+            // After the activity entry, so the feed and the toast describe the
+            // same moment rather than racing each other.
+            FailureDetected::dispatch($failure->loadMissing('project', 'pipeline'));
 
             // Auto-analysis lands in roadmaps/10. Flaky failures are excluded
             // there: analysing the same flake twenty times is the fastest way to

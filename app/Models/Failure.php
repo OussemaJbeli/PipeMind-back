@@ -16,6 +16,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Larastan reads neither the `casts()` method's enum entries nor
+ * `immutable_datetime` at level 5, so without these it infers the raw
+ * column types.
+ *
+ * @property string $uuid
+ * @property FailureCategory $category
+ * @property Severity $severity
+ * @property string|null $error_message
+ * @property string|null $job_name
+ */
 class Failure extends Model
 {
     use BelongsToTeam, HasFactory, HasUuid;
@@ -36,21 +47,25 @@ class Failure extends Model
         ];
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
+    /** @return BelongsTo<Pipeline, $this> */
     public function pipeline(): BelongsTo
     {
         return $this->belongsTo(Pipeline::class);
     }
 
+    /** @return BelongsTo<PipelineJob, $this> */
     public function job(): BelongsTo
     {
         return $this->belongsTo(PipelineJob::class, 'job_id');
     }
 
+    /** @return BelongsTo<FailureSignature, $this> */
     public function signature(): BelongsTo
     {
         return $this->belongsTo(FailureSignature::class, 'signature_id');
@@ -66,6 +81,7 @@ class Failure extends Model
         return $this->hasMany(Analysis::class)->latest();
     }
 
+    /** @return HasMany<Recommendation, $this> */
     public function recommendations(): HasMany
     {
         return $this->hasMany(Recommendation::class)->orderBy('position');
@@ -91,6 +107,7 @@ class Failure extends Model
      * only on the eager-load path — so it passes every test that does not eager
      * load and fails as a 500 in the browser.
      */
+    /** @return HasOne<Analysis, $this> */
     public function latestAnalysis(): HasOne
     {
         return $this->hasOne(Analysis::class)->latestOfMany();

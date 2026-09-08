@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Anomalies;
 
+use App\Events\AnomalyDetected;
 use App\Models\Anomaly;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +80,11 @@ class AnomalyRecorder
             $candidate['title'],
             $anomaly,
         );
+
+        // Only reached for a NEW anomaly — the recurrence path above returns
+        // early, so a slow job seen on twenty pipelines toasts once, not twenty
+        // times.
+        AnomalyDetected::dispatch($anomaly->setRelation('project', $project));
 
         return $anomaly;
     }

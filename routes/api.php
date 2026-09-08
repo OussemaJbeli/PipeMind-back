@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\V1\KnowledgeController;
 use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\PipelineController;
 use App\Http\Controllers\Api\V1\ProjectController;
+use App\Http\Controllers\Api\V1\RemediationController;
+use App\Http\Controllers\Api\V1\RemediationPolicyController;
 use App\Http\Controllers\Api\V1\SearchController;
 use App\Http\Controllers\Api\V1\SignatureController;
 use App\Http\Controllers\Api\V1\SystemStatusController;
@@ -249,6 +251,35 @@ Route::prefix('v1')->group(function (): void {
 
         Route::get('/failures/{failure}/timeline', [FailureController::class, 'timeline']);
         Route::get('/failures/{failure}/recommendations', [FailureController::class, 'recommendations']);
+
+        /*
+        |------------------------------------------------------------------
+        | Remediation — roadmaps/18
+        |------------------------------------------------------------------
+        | The only routes in the application that change a user's repository.
+        | Reading is open to anyone who can see the project; requesting needs
+        | `remediation.request`; approving needs `remediation.approve` AND a
+        | different person from the requester (enforced in the controller, since
+        | it depends on the row rather than the role).
+        */
+        Route::get('/projects/{project}/remediations', [RemediationController::class, 'index']);
+        Route::get('/remediations/{remediation}', [RemediationController::class, 'show']);
+        Route::get('/remediations/{remediation}/dry-run', [RemediationController::class, 'dryRun']);
+
+        Route::middleware('can.do:remediation.request')->group(function (): void {
+            Route::post('/recommendations/{recommendation}/accept', [RemediationController::class, 'accept']);
+        });
+
+        Route::middleware('can.do:remediation.approve')->group(function (): void {
+            Route::post('/remediations/{remediation}/approve', [RemediationController::class, 'approve']);
+            Route::post('/remediations/{remediation}/reject', [RemediationController::class, 'reject']);
+        });
+
+        // Owner only: these decide what runs without asking again.
+        Route::middleware('can.do:policies.edit')->group(function (): void {
+            Route::get('/workspace/policies', [RemediationPolicyController::class, 'index']);
+            Route::put('/workspace/policies/{actionType}', [RemediationPolicyController::class, 'update']);
+        });
 
         // The signature catalogue. Confirming a resolution here is the highest-
         // leverage write in the app: every future occurrence short-circuits to

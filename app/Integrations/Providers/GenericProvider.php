@@ -201,6 +201,42 @@ class GenericProvider implements PipelineProvider
         throw new RuntimeException('The generic provider cannot trigger actions.');
     }
 
+    public function supportsMergeRequests(): bool
+    {
+        return false;
+    }
+
+    public function createBranch(Integration $integration, Project $project, string $branch, string $fromSha): void
+    {
+        throw new RuntimeException(static::key().' hosts no repository, so it cannot create branches.');
+    }
+
+    /**
+     * @param  array<string,string>  $files
+     * @return array<string,mixed>
+     */
+    public function commitFiles(
+        Integration $integration,
+        Project $project,
+        string $branch,
+        array $files,
+        string $message,
+    ): array {
+        throw new RuntimeException(static::key().' hosts no repository, so it cannot commit files.');
+    }
+
+    /** @return array<string,mixed> */
+    public function openMergeRequest(
+        Integration $integration,
+        Project $project,
+        string $head,
+        string $base,
+        string $title,
+        string $body,
+    ): array {
+        throw new RuntimeException(static::key().' cannot open merge requests.');
+    }
+
     protected function header(array $headers, string $name): ?string
     {
         foreach ($headers as $key => $value) {

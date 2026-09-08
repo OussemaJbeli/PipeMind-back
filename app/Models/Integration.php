@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * date method called on the field is a false positive.
  *
  * @property CarbonImmutable|null $last_event_at
+ * @property array<string,mixed>|null $credentials
  */
 class Integration extends Model
 {

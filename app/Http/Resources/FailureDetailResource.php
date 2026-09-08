@@ -111,6 +111,13 @@ class FailureDetailResource extends JsonResource
                     // is looking at buys nothing.
                     'patch' => $rec->patch,
                     'status' => $rec->status,
+                    // Shape declared in the frontend's ApiRecommendation. null
+                    // means the gate has not been evaluated, which the UI must
+                    // not read as permission.
+                    'policy' => $rec->policy_decision ? [
+                        'decision' => $rec->policy_decision,
+                        'reason' => $rec->policy_reason,
+                    ] : null,
                 ])->values()->all(),
                 [],
             ),

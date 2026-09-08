@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Events\ActivityCreated;
 use App\Models\ActivityLog;
 use App\Models\Project;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 if (! function_exists('currentTeam')) {
     /**
@@ -89,7 +91,7 @@ if (! function_exists('activity_log')) {
             return;
         }
 
-        ActivityLog::create([
+        $entry = ActivityLog::create([
             'team_id' => $teamId,
             'project_id' => $project?->id,
             'user_id' => auth()->id(),
@@ -103,5 +105,22 @@ if (! function_exists('activity_log')) {
             'subject_uuid' => $subject->uuid ?? null,
             'metadata' => $metadata,
         ]);
+
+        // Broadcast from here rather than from each call site: every activity
+        // entry in the application already flows through this function, and
+        // dispatching at each of the ~40 callers would guarantee some of them
+        // are missed.
+        //
+        // Never allowed to break the write. Activity logging is called from
+        // ingestion and from queued jobs, and a broken broadcaster must not turn
+        // "a pipeline was recorded" into a failed job.
+        try {
+            ActivityCreated::dispatch($entry->loadMissing('team'));
+        } catch (Throwable $exception) {
+            Log::warning('activity.broadcast_failed', [
+                'activity' => $entry->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }

@@ -378,6 +378,77 @@ class GitlabProvider implements PipelineProvider
         )->json();
     }
 
+    public function supportsMergeRequests(): bool
+    {
+        return true;
+    }
+
+    public function createBranch(Integration $integration, Project $project, string $branch, string $fromSha): void
+    {
+        $this->guard(
+            $this->http($integration)->post("/projects/{$project->external_id}/repository/branches", [
+                'branch' => $branch,
+                'ref' => $fromSha,
+            ]),
+            "create branch {$branch}",
+        );
+    }
+
+    /**
+     * @param  array<string,string>  $files
+     * @return array<string,mixed>
+     */
+    public function commitFiles(
+        Integration $integration,
+        Project $project,
+        string $branch,
+        array $files,
+        string $message,
+    ): array {
+        // GitLab takes every file in one commit, which is what we actually want:
+        // a fix spanning two files is one change, and splitting it would leave
+        // an intermediate commit that does not build.
+        $actions = [];
+
+        foreach ($files as $path => $contents) {
+            $actions[] = [
+                'action' => 'update',
+                'file_path' => ltrim($path, '/'),
+                'content' => $contents,
+            ];
+        }
+
+        return $this->guard(
+            $this->http($integration)->post("/projects/{$project->external_id}/repository/commits", [
+                'branch' => $branch,
+                'commit_message' => $message,
+                'actions' => $actions,
+            ]),
+            'commit files',
+        )->json() ?? [];
+    }
+
+    /** @return array<string,mixed> */
+    public function openMergeRequest(
+        Integration $integration,
+        Project $project,
+        string $head,
+        string $base,
+        string $title,
+        string $body,
+    ): array {
+        return $this->guard(
+            $this->http($integration)->post("/projects/{$project->external_id}/merge_requests", [
+                'source_branch' => $head,
+                'target_branch' => $base,
+                'title' => $title,
+                'description' => $body,
+                'remove_source_branch' => true,
+            ]),
+            'open merge request',
+        )->json() ?? [];
+    }
+
     /** Header names arrive with inconsistent casing depending on the server. */
     protected function header(array $headers, string $name): ?string
     {

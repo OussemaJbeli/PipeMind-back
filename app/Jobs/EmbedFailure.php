@@ -56,7 +56,7 @@ class EmbedFailure implements ShouldQueue
         withTeam($failure->project->team, function () use ($failure, $ai): void {
             $response = $ai->embed(
                 text: $failure->error_message,
-                category: $failure->category?->value,
+                category: $failure->category->value,
                 ecosystem: $failure->ecosystem,
                 jobName: $failure->job_name,
             );

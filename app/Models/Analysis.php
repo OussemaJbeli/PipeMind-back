@@ -14,6 +14,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Larastan reads the jsonb column type rather than the `casts()` entry, so
+ * without this an array offset on `raw_response` looks like a string offset.
+ *
+ * @property array<string,mixed>|null $raw_response
+ * @property string|null $root_cause
+ * @property string $uuid
+ * @property FailureCategory|null $category
+ * @property float|null $confidence
+ * @property string|null $summary
+ * @property bool $cache_hit
+ */
 class Analysis extends Model
 {
     use BelongsToTeam, HasFactory, HasUuid;
@@ -41,6 +53,7 @@ class Analysis extends Model
         ];
     }
 
+    /** @return BelongsTo<Failure, $this> */
     public function failure(): BelongsTo
     {
         return $this->belongsTo(Failure::class);

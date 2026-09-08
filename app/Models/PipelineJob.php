@@ -12,6 +12,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Larastan reads neither the `casts()` method's enum entries nor
+ * `immutable_datetime` at level 5, so without these it infers the raw
+ * column types and every enum method call on them looks like a call on a
+ * string.
+ *
+ * @property int $id
+ * @property int $pipeline_id
+ * @property string|null $external_id
+ * @property string $name
+ * @property JobStatus $status
+ * @property array<string,mixed>|null $raw_payload
+ * @property-read JobLog|null $log
+ */
 class PipelineJob extends Model
 {
     use HasFactory, HasUuid, ScopedThroughProject;
@@ -37,6 +51,7 @@ class PipelineJob extends Model
         return 'pipeline.project';
     }
 
+    /** @return BelongsTo<Pipeline, $this> */
     public function pipeline(): BelongsTo
     {
         return $this->belongsTo(Pipeline::class);

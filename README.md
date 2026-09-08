@@ -539,3 +539,19 @@ The architecture should therefore remain open to better ideas as PipeMind evolve
 - php artisan serve
 - php artisan queue:work --queue=ingestion,logs,analysis,metrics,default
 - php artisan pipemind:tunnel
+- php artisan reverb:start --host=0.0.0.0 --port=8081
+
+`reverb:start` is optional. Realtime is an optimisation, never the only path:
+with it stopped, every screen falls back to polling and stays correct — the
+connection indicator says "Reconnecting" and the query intervals resume on
+their own. Add `--debug` to watch subscriptions and published frames.
+
+Reverb runs on the host rather than in `docker-compose.yml`, because compose
+here provides infrastructure only (Postgres, Redis, MinIO, Mailpit) and there is
+no application image to build. Containerising the PHP processes belongs with
+deployment in roadmaps/22.
+
+**Broadcasting goes through the queue**, so `queue:work` must be running for
+live updates to leave the application at all — and it must be restarted after
+`composer install` pulls in a new dependency, or every broadcast fails with a
+missing class while the writes themselves keep succeeding.

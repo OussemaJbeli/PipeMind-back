@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Events\AnalysisCompleted;
+use App\Events\AnalysisStarted;
 use App\Exceptions\Ai\AiBudgetExceeded;
 use App\Exceptions\Ai\AiProviderRateLimited;
 use App\Exceptions\Ai\AiProviderUnauthorized;
@@ -96,13 +98,24 @@ class AnalyzeFailure implements ShouldQueue
                 if (! $this->force && $cached = $cache->get($failure)) {
                     $persister->persistCached($analysis, $failure, $cached);
 
+                    // A cache hit is instant, so there is no "analysing" state
+                    // worth showing — but the result still has to arrive live.
+                    AnalysisCompleted::dispatch($analysis->fresh()->loadMissing('failure.project'));
+
                     return;
                 }
+
+                // Announced before the model call, not after: this is the four
+                // seconds a user actually spends looking at the page, and a
+                // blank panel for that long reads as nothing happening.
+                AnalysisStarted::dispatch($failure->loadMissing('project'));
 
                 $result = $ai->analyze($builder->build($failure));
 
                 $persister->persist($analysis, $failure, $result);
                 $cache->put($failure, $result);
+
+                AnalysisCompleted::dispatch($analysis->fresh()->loadMissing('failure.project'));
 
                 EmbedFailure::dispatch($failure->id);
             } catch (AiBudgetExceeded $e) {
